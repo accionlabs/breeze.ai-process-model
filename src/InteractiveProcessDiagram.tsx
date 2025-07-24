@@ -270,7 +270,7 @@ const InteractiveProcessDiagram = () => {
                                           bidirectional={activity.bidirectional}
                                         />
                                       );
-                                    } else if (activity.type === 'selfDirected') {
+                                    } else if (activity.type === 'self') {
                                       return (
                                         <SelfDirectedActivity 
                                           key={`${sequence}-${idx}`}

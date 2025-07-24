@@ -39,10 +39,10 @@ export const phases = {
         color: "bg-pink-50",
         activities: [
           { sequence: 1, type: 'flow', from: 'HIL', to: 'SE', label: 'Share existing engineering context' },
-          { sequence: 1, type: 'selfDirected', team: 'DE', activities: ['Begin manual development planning', 'Set up traditional development workflows'] },
+          { sequence: 1, type: 'self', team: 'DE', activities: ['Begin manual development planning', 'Set up traditional development workflows'] },
           { sequence: 2, type: 'flow', from: 'HIL', to: 'SE', label: 'Provide insights on current pain points' },
           { sequence: 2, type: 'flow', from: 'AD', to: 'SE', label: 'Share agent architecture plans' },
-          { sequence: 3, type: 'selfDirected', team: 'DE', activities: ['Continue baseline manual development'] },
+          { sequence: 3, type: 'self', team: 'DE', activities: ['Continue baseline manual development'] },
           { sequence: 3, type: 'flow', from: 'SE', to: 'AD', label: 'Provide semantic model context' }
         ]
       },
@@ -52,10 +52,10 @@ export const phases = {
         color: "bg-green-50",
         activities: [
           { sequence: 1, type: 'flow', from: 'HIL', to: 'SE', label: 'Share requirements and manual estimates' },
-          { sequence: 1, type: 'selfDirected', team: 'DE', activities: ['Continue primary manual development work', 'Maintain existing development processes'] },
+          { sequence: 1, type: 'self', team: 'DE', activities: ['Continue primary manual development work', 'Maintain existing development processes'] },
           { sequence: 2, type: 'flow', from: 'AD', to: 'SE', label: 'Share initial agent prototypes' },
           { sequence: 2, type: 'flow', from: 'SE', to: 'AD', label: 'Validate agents against semantic model context' },
-          { sequence: 3, type: 'selfDirected', team: 'DE', activities: ['Provide baseline comparison metrics'] },
+          { sequence: 3, type: 'self', team: 'DE', activities: ['Provide baseline comparison metrics'] },
           { sequence: 3, type: 'flow', from: 'SE', to: 'HIL', label: 'Present early agent outputs for evaluation' },
           { sequence: 4, type: 'flow', from: 'HIL', to: 'SE', label: 'Provide feedback on agent-generated deliverables' },
           { sequence: 4, type: 'flow', from: 'HIL', to: 'AD', label: 'Report on agent effectiveness vs manual process' }
@@ -93,16 +93,16 @@ export const phases = {
         color: "bg-orange-50",
         activities: [
           { sequence: 1, type: 'flow', from: 'SE', to: 'AD', label: 'Monitor agent performance metrics' },
-          { sequence: 1, type: 'selfDirected', team: 'DE', activities: ['Continue manual development of complex features', 'Handle critical path development work'] },
+          { sequence: 1, type: 'self', team: 'DE', activities: ['Continue manual development of complex features', 'Handle critical path development work'] },
           { sequence: 2, type: 'flow', from: 'AD', to: 'SE', label: 'Enhanced agent capabilities' },
-          { sequence: 2, type: 'selfDirected', team: 'HIL', activities: ['Provide manual vs automated comparison data'] },
-          { sequence: 3, type: 'selfDirected', team: 'SE', activities: ['Fine-tune contextual models based on outputs'] },
-          { sequence: 3, type: 'selfDirected', team: 'DE', activities: ['Continue parallel manual work streams'] },
+          { sequence: 2, type: 'self', team: 'HIL', activities: ['Provide manual vs automated comparison data'] },
+          { sequence: 3, type: 'self', team: 'SE', activities: ['Fine-tune contextual models based on outputs'] },
+          { sequence: 3, type: 'self', team: 'DE', activities: ['Continue parallel manual work streams'] },
           { sequence: 4, type: 'flow', from: 'SE', to: 'HIL', label: 'Deliver context-validated agent deliverables' },
           { sequence: 4, type: 'flow', from: 'HIL', to: 'SE', label: 'Provide quality feedback & acceptance criteria' },
-          { sequence: 4, type: 'selfDirected', team: 'HIL', activities: ['Review agent-generated code & specs'] },
+          { sequence: 4, type: 'self', team: 'HIL', activities: ['Review agent-generated code & specs'] },
           { sequence: 5, type: 'flow', from: 'HIL', to: 'AD', label: 'Report on agent vs manual development comparison' },
-          { sequence: 5, type: 'selfDirected', team: 'AD', activities: ['Improve agents based on development feedback'] }
+          { sequence: 5, type: 'self', team: 'AD', activities: ['Improve agents based on development feedback'] }
         ]
       },
     ],
