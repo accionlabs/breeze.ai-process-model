@@ -20,8 +20,8 @@ const InteractiveProcessDiagram = () => {
         x: (TEAM_X_POSITIONS as any)[team] || 50, 
         color: team === 'AD' ? 'text-blue-600' : 
                team === 'SE' ? 'text-purple-600' : 
-               team === 'DE_AUTO' ? 'text-green-600' : 
-               team === 'DE_MANUAL' ? 'text-orange-600' : 'text-gray-600'
+               team === 'HIL' ? 'text-green-600' : 
+               team === 'DE' ? 'text-orange-600' : 'text-gray-600'
       };
     };
 
@@ -77,12 +77,12 @@ const InteractiveProcessDiagram = () => {
         position: (TEAM_X_POSITIONS as any)[team] || 50, 
         color: team === 'AD' ? 'bg-white/90 border-blue-300' : 
                team === 'SE' ? 'bg-white/90 border-purple-300' : 
-               team === 'DE_AUTO' ? 'bg-white/90 border-green-300' : 
-               team === 'DE_MANUAL' ? 'bg-white/90 border-orange-300' : 'bg-white/90 border-gray-300',
+               team === 'HIL' ? 'bg-white/90 border-green-300' : 
+               team === 'DE' ? 'bg-white/90 border-orange-300' : 'bg-white/90 border-gray-300',
         textColor: team === 'AD' ? 'text-blue-700' : 
                   team === 'SE' ? 'text-purple-700' : 
-                  team === 'DE_AUTO' ? 'text-green-700' : 
-                  team === 'DE_MANUAL' ? 'text-orange-700' : 'text-gray-700'
+                  team === 'HIL' ? 'text-green-700' : 
+                  team === 'DE' ? 'text-orange-700' : 'text-gray-700'
       };
     };
 
