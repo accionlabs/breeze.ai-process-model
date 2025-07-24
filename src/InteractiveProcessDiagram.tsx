@@ -1,36 +1,11 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronRight, ArrowRight, ArrowLeft } from 'lucide-react';
+import { SCOPE_PERCENTAGES, TEAM_X_POSITIONS, BOX_HEIGHTS, phases } from './phaseConfig';
 
 const InteractiveProcessDiagram = () => {
   const [currentPhase, setCurrentPhase] = useState(1);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
 
-  // CONFIGURABLE COORDINATES - Edit these to adjust arrow positions
-  // These values represent the center of each team column in the 3-column grid (percentage from left)
-  const TEAM_X_POSITIONS = {
-    AD: 16.67,  // Agent Developers - should align with first column center
-    SE: 50,     // Semantic Engineers - should align with middle column center
-    DE: 83.33   // Development Engineers - should align with third column center
-  };
-
-  // CONFIGURABLE BOX HEIGHTS - Edit these to adjust activity group container heights
-  const BOX_HEIGHTS = {
-    // Phase 1
-    collaboration1: 120,
-    parallel1: 100,
-    integration1: 120,
-    
-    // Phase 2  
-    deployment2: 100,
-    collaboration2: 140,
-    parallel2: 100,
-    
-    // Phase 3
-    pipeline3: 100,
-    optimization3: 50,
-    automated3: 100,
-    feedback3: 100
-  };
 
   const toggleSection = (sectionId: string) => {
     setExpandedSections(prev => ({
@@ -43,7 +18,10 @@ const InteractiveProcessDiagram = () => {
     const getTeamPosition = (team: string) => {
       return { 
         x: (TEAM_X_POSITIONS as any)[team] || 50, 
-        color: team === 'AD' ? 'text-blue-600' : team === 'SE' ? 'text-purple-600' : 'text-green-600'
+        color: team === 'AD' ? 'text-blue-600' : 
+               team === 'SE' ? 'text-purple-600' : 
+               team === 'DE_AUTO' ? 'text-green-600' : 
+               team === 'DE_MANUAL' ? 'text-orange-600' : 'text-gray-600'
       };
     };
 
@@ -98,9 +76,13 @@ const InteractiveProcessDiagram = () => {
       return { 
         position: (TEAM_X_POSITIONS as any)[team] || 50, 
         color: team === 'AD' ? 'bg-white/90 border-blue-300' : 
-               team === 'SE' ? 'bg-white/90 border-purple-300' : 'bg-white/90 border-green-300',
+               team === 'SE' ? 'bg-white/90 border-purple-300' : 
+               team === 'DE_AUTO' ? 'bg-white/90 border-green-300' : 
+               team === 'DE_MANUAL' ? 'bg-white/90 border-orange-300' : 'bg-white/90 border-gray-300',
         textColor: team === 'AD' ? 'text-blue-700' : 
-                  team === 'SE' ? 'text-purple-700' : 'text-green-700'
+                  team === 'SE' ? 'text-purple-700' : 
+                  team === 'DE_AUTO' ? 'text-green-700' : 
+                  team === 'DE_MANUAL' ? 'text-orange-700' : 'text-gray-700'
       };
     };
 
@@ -109,11 +91,12 @@ const InteractiveProcessDiagram = () => {
     
     return (
       <div 
-        className={`absolute w-72 p-3 rounded-lg border ${teamInfo.color} shadow-sm z-20`}
+        className={`absolute p-3 rounded-lg border ${teamInfo.color} shadow-sm z-20`}
         style={{ 
           left: `${teamInfo.position}%`,
           transform: 'translateX(-50%)',
-          top: `${topOffset}px`
+          top: `${topOffset}px`,
+          width: '22%'  // Approximately 1/4 of container width to match grid columns
         }}
       >
         <ul className="space-y-1">
@@ -128,225 +111,6 @@ const InteractiveProcessDiagram = () => {
     );
   };
 
-  const phases = {
-    1: {
-      title: "Phase 1: Parallel Development - Foundation Building",
-      subtitle: "80% Manual, 20% Automated",
-      color: "bg-red-50 border-red-200",
-      sections: [
-        {
-          id: "collaboration1",
-          title: "Initial Collaboration & Knowledge Sharing",
-          color: "bg-pink-50",
-          flows: [
-            { from: 'DE', to: 'SE', label: 'Share existing engineering context' },
-            { from: 'DE', to: 'SE', label: 'Provide insights on current pain points' },
-            { from: 'AD', to: 'SE', label: 'Share agent architecture plans' },
-            { from: 'SE', to: 'AD', label: 'Provide semantic model context' }
-          ]
-        },
-        {
-          id: "parallel1",
-          title: "Parallel Development Streams",
-          color: "bg-blue-50",
-          outputs: [
-            {
-              title: "Agent Foundation Building",
-              items: [
-                "Build requirement → specification agents",
-                "Create UI wireframe generators", 
-                "Develop initial code generation agents",
-                "Build test case automation",
-                "Create deployment script generators"
-              ]
-            },
-            {
-              title: "Semantic Context Development",
-              items: [
-                "Map enterprise architecture constraints",
-                "Build dependency relationship models",
-                "Define quality validation frameworks",
-                "Create contextual constraint engine"
-              ]
-            },
-            {
-              title: "Manual Development (Primary Path)",
-              items: [
-                "Write application code manually",
-                "Create comprehensive test suites", 
-                "Handle deployment processes",
-                "Conduct code reviews & quality assurance"
-              ]
-            }
-          ]
-        },
-        {
-          id: "integration1",
-          title: "Early Integration Testing",
-          color: "bg-green-50",
-          flows: [
-            { from: 'DE', to: 'SE', label: 'Share requirements and manual estimates' },
-            { from: 'AD', to: 'SE', label: 'Share initial agent prototypes' },
-            { from: 'SE', to: 'AD', label: 'Validate agents against semantic model context' },
-            { from: 'SE', to: 'DE', label: 'Present early agent outputs for evaluation' },
-            { from: 'DE', to: 'SE', label: 'Provide feedback on agent-generated deliverables' },
-            { from: 'DE', to: 'AD', label: 'Report on agent effectiveness vs manual process' }
-          ]
-        }
-      ],
-      output: "Agent foundation + Context framework + Early Agent deliverables + Manual deliverables"
-    },
-    2: {
-      title: "Phase 2: Agent Integration - Balanced Automation", 
-      subtitle: "50% Manual, 50% Automated",
-      color: "bg-blue-50 border-blue-200",
-      sections: [
-        {
-          id: "deployment2",
-          title: "Agent Deployment & Initial Production Use",
-          color: "bg-blue-50",
-          flows: [
-            { from: 'DE', to: 'SE', label: 'Share requirements and manual estimates' },
-            { from: 'SE', to: 'AD', label: 'Configure semantic context for agents' },
-            { from: 'AD', to: 'SE', label: 'Deploy agents for execution' },
-            { from: 'SE', to: 'DE', label: 'Submit agent outputs for validation' },
-            { from: 'DE', to: 'SE', label: 'Provide HIL feedback' }
-          ]
-        },
-        {
-          id: "collaboration2",
-          title: "Active Collaboration Loop - Continuous Refinement Cycle",
-          color: "bg-orange-50",
-          flows: [
-            { from: 'SE', to: 'AD', label: 'Monitor agent performance metrics' },
-            { from: 'AD', to: 'SE', label: 'Enhanced agent capabilities' },
-            { from: 'SE', to: 'DE', label: 'Deliver context-validated agent deliverables' },
-            { from: 'DE', to: 'SE', label: 'Provide quality feedback & acceptance criteria' },
-            { from: 'DE', to: 'AD', label: 'Report on agent vs manual development comparison' }
-          ],
-          selfDirected: [
-            { team: 'SE', activities: ['Fine-tune contextual models based on outputs'] },
-            { team: 'DE', activities: ['Review agent-generated code & specs'] },
-            { team: 'AD', activities: ['Improve agents based on development feedback'] }
-          ]
-        },
-        {
-          id: "parallel2",
-          title: "Parallel Development Streams",
-          color: "bg-green-50",
-          outputs: [
-            {
-              title: "Agent-Generated Work",
-              items: [
-                "Automated specifications & user stories",
-                "Generated UI wireframes & prototypes",
-                "Automated code components", 
-                "Generated test cases & scripts"
-              ]
-            },
-            {
-              title: "Semantic Validation",
-              items: [
-                "Context-validated deliverables",
-                "Constraint compliance feedback",
-                "Update models based on real-world usage"
-              ]
-            },
-            {
-              title: "Manual Development Work",
-              items: [
-                "Complex feature development",
-                "Integration work & system architecture",
-                "Quality assurance & acceptance testing"
-              ]
-            }
-          ]
-        }
-      ],
-      output: "Reliable agent deliverables + Proven context models + Hybrid workflow"
-    },
-    3: {
-      title: "Phase 3: Automated Maturity - Optimized Efficiency",
-      subtitle: "20% Manual, 80% Automated", 
-      color: "bg-green-50 border-green-200",
-      sections: [
-        {
-          id: "pipeline3",
-          title: "Streamlined Automated Pipeline",
-          color: "bg-green-50",
-          flows: [
-            { from: 'AD', to: 'SE', label: 'Advanced optimized agents' },
-            { from: 'SE', to: 'DE', label: 'High-confidence automated deliverables' }
-          ],
-          selfDirected: [
-            { team: 'SE', activities: ['Mature contextual models with predictive capabilities'] },
-            { team: 'DE', activities: ['Focus on acceptance testing & deployment decisions'] }
-          ]
-        },
-        {
-          id: "optimization3",
-          title: "Continuous Optimization Loop - Mature Process Cycle", 
-          color: "bg-orange-50",
-          flows: [
-            { from: 'SE', to: 'DE', label: 'Context-validated automated deliverables' },
-            { from: 'DE', to: 'SE', label: 'Acceptance test results & deployment feedback' },
-            { from: 'SE', to: 'AD', label: 'Performance optimization requests' },
-            { from: 'AD', to: 'SE', label: 'Enhanced agent capabilities & efficiency improvements' }
-          ],
-          selfDirected: [
-            { team: 'SE', activities: ['Continuous model refinement'] }
-          ]
-        },
-        {
-          id: "automated3",
-          title: "Automated Development Flow",
-          color: "bg-blue-50",
-          outputs: [
-            {
-              title: "Primary Automated Stream → DE",
-              items: [
-                "Complete feature specifications",
-                "Production-ready UI components",
-                "Tested code implementations",
-                "Automated test suites", 
-                "Ready deployment packages"
-              ]
-            },
-            {
-              title: "Semantic Quality Assurance → DE",
-              items: [
-                "Enterprise compliance validation",
-                "Dependency conflict resolution",
-                "Quality framework enforcement"
-              ]
-            },
-            {
-              title: "Human Oversight (Minimal)",
-              items: [
-                "Final acceptance review",
-                "Deployment authorization",
-                "Production monitoring setup"
-              ]
-            }
-          ]
-        },
-        {
-          id: "feedback3",
-          title: "Feedback & Continuous Improvement",
-          color: "bg-green-100",
-          flows: [
-            { from: 'DE', to: 'SE', label: 'Production performance data' },
-            { from: 'SE', to: 'AD', label: 'Model improvement opportunities' }
-          ],
-          selfDirected: [
-            { team: 'AD', activities: ['Agent performance optimization'] },
-            { team: 'SE', activities: ['Predictive model enhancement'] }
-          ]
-        }
-      ],
-      output: "Highly automated pipeline + Minimal cycle time + Human oversight focus"
-    }
-  };
 
   const currentPhaseData = (phases as any)[currentPhase];
 
@@ -356,7 +120,6 @@ const InteractiveProcessDiagram = () => {
       <div className="mb-8">
         <div className="grid grid-cols-3 gap-4">
           {[1, 2, 3].map(phase => {
-            const phaseData = (phases as any)[phase];
             const isActive = currentPhase === phase;
             return (
               <button
@@ -390,7 +153,7 @@ const InteractiveProcessDiagram = () => {
                 <p className={`text-sm mb-3 ${
                   isActive ? 'text-blue-700' : 'text-gray-600'
                 }`}>
-                  {phaseData.subtitle}
+                  {(SCOPE_PERCENTAGES as any)[phase].manual}% Manual, {(SCOPE_PERCENTAGES as any)[phase].automated}% Automated
                 </p>
                 
                 <div className={`text-xs font-medium ${
@@ -408,32 +171,49 @@ const InteractiveProcessDiagram = () => {
 
       {/* Phase Content */}
       <div className="relative border-2 rounded-lg p-6 bg-white/80 backdrop-blur-sm">
-        {/* Team Column Backgrounds - Only within phase container */}
-        <div className="absolute inset-0 grid grid-cols-3 gap-4 pointer-events-none z-0 p-6" style={{ top: '91px', bottom: '216px' }}>
-          <div className="bg-blue-200 rounded-lg opacity-40"></div>
-          <div className="bg-purple-200 rounded-lg opacity-40"></div>
-          <div className="bg-green-200 rounded-lg opacity-40"></div>
+        {/* Process Group Backgrounds - Only within phase container */}
+        <div className="absolute inset-0 grid grid-cols-4 gap-2 pointer-events-none z-0 p-6" style={{ top: '140px', bottom: '216px' }}>
+          <div className="bg-orange-200 rounded-lg opacity-30"></div>
+          <div className="bg-green-200 rounded-lg opacity-30"></div>
+          <div className="bg-purple-200 rounded-lg opacity-30"></div>
+          <div className="bg-blue-200 rounded-lg opacity-30"></div>
         </div>
         
         {/* Phase Header */}
         <div className="relative text-center mb-6 z-10">
           <h2 className="text-2xl font-bold text-gray-800 mb-2">{currentPhaseData.title}</h2>
-          <p className="text-lg text-gray-600">{currentPhaseData.subtitle}</p>
         </div>
 
-        {/* Team Headers */}
-        <div className="relative grid grid-cols-3 gap-4 mb-6 z-10">
-          <div className="bg-white/90 border border-blue-300 rounded-lg p-3 text-center backdrop-blur-sm">
-            <h3 className="font-bold text-blue-800">Agent Developers</h3>
-            <p className="text-xs text-blue-600 mt-1">AD</p>
+        {/* Process Group Headers */}
+        <div className="relative mb-6 z-10">
+          {/* Process Group Labels */}
+          <div className="grid grid-cols-4 gap-2 mb-4">
+            <div className="bg-orange-100 border-2 border-orange-300 rounded-lg p-3 text-center">
+              <h3 className="font-bold text-orange-800 text-lg">Manual Process</h3>
+            </div>
+            <div className="col-span-3 bg-blue-100 border-2 border-blue-300 rounded-lg p-3 text-center">
+              <h3 className="font-bold text-blue-800 text-lg">Automated Process</h3>
+            </div>
           </div>
-          <div className="bg-white/90 border border-purple-300 rounded-lg p-3 text-center backdrop-blur-sm">
-            <h3 className="font-bold text-purple-800">Semantic Engineers</h3>
-            <p className="text-xs text-purple-600 mt-1">SE</p>
-          </div>
-          <div className="bg-white/90 border border-green-300 rounded-lg p-3 text-center backdrop-blur-sm">
-            <h3 className="font-bold text-green-800">Development Engineers / HIL</h3>
-            <p className="text-xs text-green-600 mt-1">DE / HIL</p>
+          
+          {/* Team Headers */}
+          <div className="grid grid-cols-4 gap-2">
+            <div className="bg-white/90 border border-orange-300 rounded-lg p-3 text-center backdrop-blur-sm">
+              <h3 className="font-bold text-orange-800 text-sm">Development Engineers</h3>
+              <p className="text-xs text-orange-600 mt-1">DE</p>
+            </div>
+            <div className="bg-white/90 border border-green-300 rounded-lg p-3 text-center backdrop-blur-sm">
+              <h3 className="font-bold text-green-800 text-sm">Human In Loop</h3>
+              <p className="text-xs text-green-600 mt-1">HIL</p>
+            </div>
+            <div className="bg-white/90 border border-purple-300 rounded-lg p-3 text-center backdrop-blur-sm">
+              <h3 className="font-bold text-purple-800 text-sm">Semantic Engineers</h3>
+              <p className="text-xs text-purple-600 mt-1">SE</p>
+            </div>
+            <div className="bg-white/90 border border-blue-300 rounded-lg p-3 text-center backdrop-blur-sm">
+              <h3 className="font-bold text-blue-800 text-sm">Agent Developers</h3>
+              <p className="text-xs text-blue-600 mt-1">AD</p>
+            </div>
           </div>
         </div>
 
@@ -443,9 +223,11 @@ const InteractiveProcessDiagram = () => {
             <div key={section.id} className="border rounded-lg bg-white/80 backdrop-blur-sm">
               <button
                 onClick={() => toggleSection(section.id)}
-                className="w-full p-4 text-left flex items-center justify-between hover:bg-opacity-80 transition-colors"
+                className="w-full p-4 text-center flex items-center justify-between hover:bg-opacity-80 transition-colors"
               >
-                <h4 className="font-bold text-gray-800">{section.title}</h4>
+                <div className="flex-1">
+                  <h4 className="font-bold text-gray-800 text-center">{section.title}</h4>
+                </div>
                 {expandedSections[section.id] ? (
                   <ChevronDown className="w-5 h-5 text-gray-600" />
                 ) : (
@@ -455,8 +237,61 @@ const InteractiveProcessDiagram = () => {
               
               {expandedSections[section.id] && (
                 <div className="px-4 pb-4">
-                  {/* Arrow Flows */}
-                  {section.flows && (
+                  {/* Sequenced Activities (grouped by sequence number) */}
+                  {section.activities && (
+                    <div className="space-y-4 mb-4">
+                      {(() => {
+                        // Group activities by sequence number
+                        const sequenceGroups: Record<number, any[]> = {};
+                        section.activities.forEach((activity: any) => {
+                          const seq = activity.sequence || 0;
+                          if (!sequenceGroups[seq]) sequenceGroups[seq] = [];
+                          sequenceGroups[seq].push(activity);
+                        });
+                        
+                        // Render each sequence group
+                        return Object.keys(sequenceGroups)
+                          .sort((a, b) => parseInt(a) - parseInt(b))
+                          .map((seqKey) => {
+                            const sequence = parseInt(seqKey);
+                            const activities = sequenceGroups[sequence];
+                            
+                            return (
+                              <div key={sequence} className="relative">
+                                <div className="relative min-h-16">
+                                  {activities.map((activity: any, idx: number) => {
+                                    if (activity.type === 'flow') {
+                                      return (
+                                        <ArrowFlow 
+                                          key={`${sequence}-${idx}`} 
+                                          from={activity.from} 
+                                          to={activity.to} 
+                                          label={activity.label}
+                                          bidirectional={activity.bidirectional}
+                                        />
+                                      );
+                                    } else if (activity.type === 'selfDirected') {
+                                      return (
+                                        <SelfDirectedActivity 
+                                          key={`${sequence}-${idx}`}
+                                          team={activity.team}
+                                          activities={activity.activities}
+                                          index={0}
+                                        />
+                                      );
+                                    }
+                                    return null;
+                                  })}
+                                </div>
+                              </div>
+                            );
+                          });
+                      })()}
+                    </div>
+                  )}
+
+                  {/* Legacy: Arrow Flows (for backward compatibility) */}
+                  {section.flows && !section.activities && (
                     <div className="space-y-2 mb-4">
                       {section.flows.map((flow: any, idx: number) => (
                         <ArrowFlow 
@@ -470,8 +305,8 @@ const InteractiveProcessDiagram = () => {
                     </div>
                   )}
 
-                  {/* Self-Directed Activities */}
-                  {section.selfDirected && (
+                  {/* Legacy: Self-Directed Activities (for backward compatibility) */}
+                  {section.selfDirected && !section.activities && (
                     <div className="relative mb-4" style={{ minHeight: `${(BOX_HEIGHTS as any)[section.id] || 100}px` }}>
                       {section.selfDirected.map((teamWork: any, idx: number) => (
                         <SelfDirectedActivity 
@@ -484,42 +319,39 @@ const InteractiveProcessDiagram = () => {
                     </div>
                   )}
 
-                  {/* Output Streams */}
-                  {section.outputs && (
-                    <div className="grid grid-cols-3 gap-4 mt-4">
-                      {section.outputs.map((output: any, idx: number) => {
-                        // Align to team columns: left (AD), center (SE), right (DE)
-                        const alignmentClasses = ['justify-self-start', 'justify-self-center', 'justify-self-end'];
-                        return (
-                          <div key={idx} className={`bg-white p-3 rounded border border-gray-200 ${alignmentClasses[idx] || ''}`}>
-                            <h5 className="font-semibold text-sm mb-2 text-gray-700">{output.title}</h5>
-                            <ul className="space-y-1">
-                              {output.items.map((item: string, itemIdx: number) => (
-                                <li key={itemIdx} className="text-xs text-gray-600 flex items-start gap-1">
-                                  <ArrowRight className="w-3 h-3 text-gray-400 mt-0.5 flex-shrink-0" />
-                                  {item}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
                 </div>
               )}
             </div>
           ))}
         </div>
 
-        {/* Phase Output */}
-        <div className="relative mt-6 bg-yellow-100 border-2 border-yellow-300 rounded-lg p-4 text-center z-10">
-          <h4 className="font-bold text-yellow-800 mb-2">Phase Output</h4>
-          <p className="text-yellow-700">{currentPhaseData.output}</p>
+        {/* Phase Outputs */}
+        <div className="relative mt-6 grid grid-cols-4 gap-2 z-10">
+          {/* Manual Process Output - matches DE column */}
+          <div className="bg-orange-100 border-2 border-orange-300 rounded-lg p-4 text-center">
+            <h4 className="font-bold text-orange-800 mb-2">Manual Process Output</h4>
+            <div className="bg-orange-200 rounded px-2 py-1 mb-2 inline-block">
+              <span className="text-xs font-bold text-orange-800">
+                {(SCOPE_PERCENTAGES as any)[currentPhase].manual}% of scope
+              </span>
+            </div>
+            <p className="text-orange-700 text-sm">{currentPhaseData.manualOutput}</p>
+          </div>
+          
+          {/* Automated Process Output - spans 3 columns (HIL, SE, AD) */}
+          <div className="col-span-3 bg-blue-100 border-2 border-blue-300 rounded-lg p-4 text-center">
+            <h4 className="font-bold text-blue-800 mb-2">Automated Process Output</h4>
+            <div className="bg-blue-200 rounded px-2 py-1 mb-2 inline-block">
+              <span className="text-xs font-bold text-blue-800">
+                {(SCOPE_PERCENTAGES as any)[currentPhase].automated}% of scope
+              </span>
+            </div>
+            <p className="text-blue-700 text-sm">{currentPhaseData.automatedOutput}</p>
+          </div>
         </div>
 
         {/* Navigation Arrows */}
-        <div className="relative flex justify-between mt-6 z-10">
+        <div className="print:hidden relative flex justify-between mt-6 z-10">
           <button
             onClick={() => setCurrentPhase(Math.max(1, currentPhase - 1))}
             disabled={currentPhase === 1}
@@ -548,13 +380,13 @@ const InteractiveProcessDiagram = () => {
         </div>
 
         {/* Progress Indicator */}
-        <div className="relative mt-4 text-center text-sm text-gray-500 z-10">
+        <div className="print:hidden relative mt-4 text-center text-sm text-gray-500 z-10">
           Phase {currentPhase} of 3
         </div>
       </div>
 
       {/* Instructions */}
-      <div className="mt-6 bg-gray-50 rounded-lg p-4">
+      <div className="print:hidden mt-6 bg-gray-50 rounded-lg p-4">
         <h4 className="font-bold text-gray-700 mb-2">How to Use:</h4>
         <ul className="text-sm text-gray-600 space-y-1">
           <li>• Use the phase tabs to navigate between the three development phases</li>

@@ -21,17 +21,17 @@ function App() {
   return (
     <div className="App">
       {/* Header with back button and title */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="bg-white border-b border-gray-200 sticky top-0 z-50 print:static print:border-none">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between print:justify-center">
           <button
             onClick={handleBackToLanding}
-            className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors"
+            className="print:hidden flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
             Back to Home
           </button>
           
-          <h1 className="text-xl font-bold text-gray-800">
+          <h1 className="text-xl font-bold text-gray-800 print:text-center">
             <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 bg-clip-text text-transparent">
               Breeze.AI
             </span>
@@ -39,7 +39,7 @@ function App() {
           </h1>
           
           {/* Company Logo */}
-          <div className="flex items-center">
+          <div className="print:hidden flex items-center">
             <img 
               src="/breeze.ai-process-model/company-logo.png" 
               alt="Company Logo" 
