@@ -97,8 +97,8 @@ const InteractiveProcessDiagram = () => {
     const getTeamInfo = (team: string) => {
       return { 
         position: (TEAM_X_POSITIONS as any)[team] || 50, 
-        color: team === 'AD' ? 'bg-white/80 border-blue-200' : 
-               team === 'SE' ? 'bg-white/80 border-purple-200' : 'bg-white/80 border-green-200',
+        color: team === 'AD' ? 'bg-white/90 border-blue-300' : 
+               team === 'SE' ? 'bg-white/90 border-purple-300' : 'bg-white/90 border-green-300',
         textColor: team === 'AD' ? 'text-blue-700' : 
                   team === 'SE' ? 'text-purple-700' : 'text-green-700'
       };
@@ -109,7 +109,7 @@ const InteractiveProcessDiagram = () => {
     
     return (
       <div 
-        className={`absolute w-72 p-3 rounded-lg border ${teamInfo.color} shadow-sm`}
+        className={`absolute w-72 p-3 rounded-lg border ${teamInfo.color} shadow-sm z-20`}
         style={{ 
           left: `${teamInfo.position}%`,
           transform: 'translateX(-50%)',
@@ -139,12 +139,10 @@ const InteractiveProcessDiagram = () => {
           title: "Initial Collaboration & Knowledge Sharing",
           color: "bg-pink-50",
           flows: [
-            { from: 'AD', to: 'SE', label: 'Share agent architecture plans' },
-            { from: 'SE', to: 'AD', label: 'Provide semantic model context' },
-            { from: 'SE', to: 'DE', label: 'Define semantic model & dependencies' },
             { from: 'DE', to: 'SE', label: 'Share existing engineering context' },
             { from: 'DE', to: 'SE', label: 'Provide insights on current pain points' },
-            { from: 'DE', to: 'AD', label: 'Provide insights on current pain points' }
+            { from: 'AD', to: 'SE', label: 'Share agent architecture plans' },
+            { from: 'SE', to: 'AD', label: 'Provide semantic model context' }
           ]
         },
         {
@@ -211,7 +209,7 @@ const InteractiveProcessDiagram = () => {
             { from: 'DE', to: 'SE', label: 'Share requirements and manual estimates' },
             { from: 'SE', to: 'AD', label: 'Configure semantic context for agents' },
             { from: 'AD', to: 'SE', label: 'Deploy agents for execution' },
-            { from: 'SE', to: 'DE', label: 'Route agent outputs for validation' },
+            { from: 'SE', to: 'DE', label: 'Submit agent outputs for validation' },
             { from: 'DE', to: 'SE', label: 'Provide HIL feedback' }
           ]
         },
@@ -355,59 +353,94 @@ const InteractiveProcessDiagram = () => {
   return (
     <div className="max-w-6xl mx-auto p-6 bg-white">
       {/* Phase Navigation */}
-      <div className="flex justify-center mb-6">
-        <div className="flex bg-gray-100 rounded-lg p-1">
-          {[1, 2, 3].map(phase => (
-            <button
-              key={phase}
-              onClick={() => setCurrentPhase(phase)}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                currentPhase === phase 
-                  ? 'bg-white shadow-sm text-blue-600' 
-                  : 'text-gray-600 hover:text-gray-800'
-              }`}
-            >
-              Phase {phase}
-            </button>
-          ))}
+      <div className="mb-8">
+        <div className="grid grid-cols-3 gap-4">
+          {[1, 2, 3].map(phase => {
+            const phaseData = (phases as any)[phase];
+            const isActive = currentPhase === phase;
+            return (
+              <button
+                key={phase}
+                onClick={() => setCurrentPhase(phase)}
+                className={`relative p-6 rounded-xl border-2 text-left transition-all duration-300 transform hover:scale-105 ${
+                  isActive 
+                    ? 'border-blue-500 bg-blue-50 shadow-lg' 
+                    : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
+                    isActive 
+                      ? 'bg-blue-500 text-white' 
+                      : 'bg-gray-200 text-gray-600'
+                  }`}>
+                    {phase}
+                  </div>
+                  {isActive && (
+                    <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                  )}
+                </div>
+                
+                <h3 className={`font-bold text-lg mb-2 ${
+                  isActive ? 'text-blue-900' : 'text-gray-800'
+                }`}>
+                  Phase {phase}
+                </h3>
+                
+                <p className={`text-sm mb-3 ${
+                  isActive ? 'text-blue-700' : 'text-gray-600'
+                }`}>
+                  {phaseData.subtitle}
+                </p>
+                
+                <div className={`text-xs font-medium ${
+                  isActive ? 'text-blue-600' : 'text-gray-500'
+                }`}>
+                  {phase === 1 && 'Foundation Building'}
+                  {phase === 2 && 'Balanced Integration'}  
+                  {phase === 3 && 'Optimized Automation'}
+                </div>
+              </button>
+            );
+          })}
         </div>
       </div>
 
       {/* Phase Content */}
-      <div className={`relative border-2 rounded-lg p-6 ${currentPhaseData.color}`}>
+      <div className="relative border-2 rounded-lg p-6 bg-white/80 backdrop-blur-sm">
+        {/* Team Column Backgrounds - Only within phase container */}
+        <div className="absolute inset-0 grid grid-cols-3 gap-4 pointer-events-none z-0 p-6" style={{ top: '91px', bottom: '216px' }}>
+          <div className="bg-blue-200 rounded-lg opacity-40"></div>
+          <div className="bg-purple-200 rounded-lg opacity-40"></div>
+          <div className="bg-green-200 rounded-lg opacity-40"></div>
+        </div>
+        
         {/* Phase Header */}
-        <div className="text-center mb-6">
+        <div className="relative text-center mb-6 z-10">
           <h2 className="text-2xl font-bold text-gray-800 mb-2">{currentPhaseData.title}</h2>
           <p className="text-lg text-gray-600">{currentPhaseData.subtitle}</p>
         </div>
 
         {/* Team Headers */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
-          <div className="bg-blue-100 border border-blue-300 rounded-lg p-3 text-center">
+        <div className="relative grid grid-cols-3 gap-4 mb-6 z-10">
+          <div className="bg-white/90 border border-blue-300 rounded-lg p-3 text-center backdrop-blur-sm">
             <h3 className="font-bold text-blue-800">Agent Developers</h3>
             <p className="text-xs text-blue-600 mt-1">AD</p>
           </div>
-          <div className="bg-purple-100 border border-purple-300 rounded-lg p-3 text-center">
+          <div className="bg-white/90 border border-purple-300 rounded-lg p-3 text-center backdrop-blur-sm">
             <h3 className="font-bold text-purple-800">Semantic Engineers</h3>
             <p className="text-xs text-purple-600 mt-1">SE</p>
           </div>
-          <div className="bg-green-100 border border-green-300 rounded-lg p-3 text-center">
+          <div className="bg-white/90 border border-green-300 rounded-lg p-3 text-center backdrop-blur-sm">
             <h3 className="font-bold text-green-800">Development Engineers / HIL</h3>
             <p className="text-xs text-green-600 mt-1">DE / HIL</p>
           </div>
         </div>
 
-        {/* Team Column Backgrounds */}
-        <div className="absolute inset-0 grid grid-cols-3 gap-4 pointer-events-none">
-          <div className="bg-blue-50/30 rounded-lg"></div>
-          <div className="bg-purple-50/30 rounded-lg"></div>
-          <div className="bg-green-50/30 rounded-lg"></div>
-        </div>
-
         {/* Expandable Sections */}
-        <div className="relative space-y-4">
+        <div className="relative space-y-4 z-10">
           {currentPhaseData.sections.map((section: any) => (
-            <div key={section.id} className={`border rounded-lg ${section.color}`}>
+            <div key={section.id} className="border rounded-lg bg-white/80 backdrop-blur-sm">
               <button
                 onClick={() => toggleSection(section.id)}
                 className="w-full p-4 text-left flex items-center justify-between hover:bg-opacity-80 transition-colors"
@@ -480,13 +513,13 @@ const InteractiveProcessDiagram = () => {
         </div>
 
         {/* Phase Output */}
-        <div className="mt-6 bg-yellow-100 border-2 border-yellow-300 rounded-lg p-4 text-center">
+        <div className="relative mt-6 bg-yellow-100 border-2 border-yellow-300 rounded-lg p-4 text-center z-10">
           <h4 className="font-bold text-yellow-800 mb-2">Phase Output</h4>
           <p className="text-yellow-700">{currentPhaseData.output}</p>
         </div>
 
         {/* Navigation Arrows */}
-        <div className="flex justify-between mt-6">
+        <div className="relative flex justify-between mt-6 z-10">
           <button
             onClick={() => setCurrentPhase(Math.max(1, currentPhase - 1))}
             disabled={currentPhase === 1}
@@ -515,7 +548,7 @@ const InteractiveProcessDiagram = () => {
         </div>
 
         {/* Progress Indicator */}
-        <div className="mt-4 text-center text-sm text-gray-500">
+        <div className="relative mt-4 text-center text-sm text-gray-500 z-10">
           Phase {currentPhase} of 3
         </div>
       </div>
