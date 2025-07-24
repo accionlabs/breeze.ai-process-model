@@ -140,9 +140,10 @@ const InteractiveProcessDiagram = () => {
           color: "bg-pink-50",
           flows: [
             { from: 'AD', to: 'SE', label: 'Share agent architecture plans' },
-            { from: 'SE', to: 'AD', label: 'Provide enterprise context requirements' },
-            { from: 'SE', to: 'DE', label: 'Define constraint frameworks & dependencies' },
-            { from: 'DE', to: 'SE', label: 'Share existing development patterns' },
+            { from: 'SE', to: 'AD', label: 'Provide semantic model context' },
+            { from: 'SE', to: 'DE', label: 'Define semantic model & dependencies' },
+            { from: 'DE', to: 'SE', label: 'Share existing engineering context' },
+            { from: 'DE', to: 'SE', label: 'Provide insights on current pain points' },
             { from: 'DE', to: 'AD', label: 'Provide insights on current pain points' }
           ]
         },
@@ -186,15 +187,16 @@ const InteractiveProcessDiagram = () => {
           title: "Early Integration Testing",
           color: "bg-green-50",
           flows: [
+            { from: 'DE', to: 'SE', label: 'Share requirements and manual estimates' },
             { from: 'AD', to: 'SE', label: 'Share initial agent prototypes' },
-            { from: 'SE', to: 'AD', label: 'Validate agents against context constraints' },
+            { from: 'SE', to: 'AD', label: 'Validate agents against semantic model context' },
             { from: 'SE', to: 'DE', label: 'Present early agent outputs for evaluation' },
             { from: 'DE', to: 'SE', label: 'Provide feedback on agent-generated deliverables' },
             { from: 'DE', to: 'AD', label: 'Report on agent effectiveness vs manual process' }
           ]
         }
       ],
-      output: "Agent foundation + Context framework + Manual deliverables"
+      output: "Agent foundation + Context framework + Early Agent deliverables + Manual deliverables"
     },
     2: {
       title: "Phase 2: Agent Integration - Balanced Automation", 
@@ -206,10 +208,11 @@ const InteractiveProcessDiagram = () => {
           title: "Agent Deployment & Initial Production Use",
           color: "bg-blue-50",
           flows: [
-            { from: 'AD', to: 'SE', label: 'Deploy refined agents for production testing' },
-            { from: 'SE', to: 'AD', label: 'Configure context-aware agent behavior' },
-            { from: 'SE', to: 'DE', label: 'Route agent outputs through validation pipeline' },
-            { from: 'DE', to: 'SE', label: 'Set up parallel manual/agent development streams' }
+            { from: 'DE', to: 'SE', label: 'Share requirements and manual estimates' },
+            { from: 'SE', to: 'AD', label: 'Configure semantic context for agents' },
+            { from: 'AD', to: 'SE', label: 'Deploy agents for execution' },
+            { from: 'SE', to: 'DE', label: 'Route agent outputs for validation' },
+            { from: 'DE', to: 'SE', label: 'Provide HIL feedback' }
           ]
         },
         {
@@ -389,8 +392,8 @@ const InteractiveProcessDiagram = () => {
             <p className="text-xs text-purple-600 mt-1">SE</p>
           </div>
           <div className="bg-green-100 border border-green-300 rounded-lg p-3 text-center">
-            <h3 className="font-bold text-green-800">Development Engineers</h3>
-            <p className="text-xs text-green-600 mt-1">DE</p>
+            <h3 className="font-bold text-green-800">Development Engineers / HIL</h3>
+            <p className="text-xs text-green-600 mt-1">DE / HIL</p>
           </div>
         </div>
 
