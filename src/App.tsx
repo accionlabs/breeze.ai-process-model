@@ -41,7 +41,7 @@ function App() {
           {/* Company Logo */}
           <div className="flex items-center">
             <img 
-              src="/company-logo.png" 
+              src="/breeze.ai-process-model/company-logo.png" 
               alt="Company Logo" 
               className="h-10 w-auto object-contain"
               onError={(e) => {

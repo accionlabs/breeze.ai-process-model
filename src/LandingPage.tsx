@@ -11,7 +11,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterProcess }) => {
       {/* Company Logo - Top Right */}
       <div className="absolute top-6 right-6 z-10">
         <img 
-          src="/company-logo.png" 
+          src="/breeze.ai-process-model/company-logo.png" 
           alt="Company Logo" 
           className="h-12 w-auto object-contain"
           onError={(e) => {
@@ -32,7 +32,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterProcess }) => {
         <div className="mb-8">
           {/* Breeze.AI Video Logo */}
           <video 
-            src="/breeze-ai-logo.mp4" 
+            src="/breeze.ai-process-model/breeze-ai-logo.mp4" 
             autoPlay
             loop
             muted
