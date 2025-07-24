@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronRight, ArrowRight, ArrowLeft } from 'lucide-react';
-import { SCOPE_PERCENTAGES, TEAM_X_POSITIONS, BOX_HEIGHTS, phases } from './phaseConfig';
+import { TEAM_X_POSITIONS, BOX_HEIGHTS, phases } from './phaseConfig';
 
 const InteractiveProcessDiagram = () => {
   const [currentPhase, setCurrentPhase] = useState(1);
@@ -153,7 +153,7 @@ const InteractiveProcessDiagram = () => {
                 <p className={`text-sm mb-3 ${
                   isActive ? 'text-blue-700' : 'text-gray-600'
                 }`}>
-                  {(SCOPE_PERCENTAGES as any)[phase].manual}% Manual, {(SCOPE_PERCENTAGES as any)[phase].automated}% Automated
+                  {(phases as any)[phase].manualOutput.percentage}% Manual, {(phases as any)[phase].automatedOutput.percentage}% Automated
                 </p>
                 
                 <div className={`text-xs font-medium ${
@@ -332,10 +332,10 @@ const InteractiveProcessDiagram = () => {
             <h4 className="font-bold text-orange-800 mb-2">Manual Process Output</h4>
             <div className="bg-orange-200 rounded px-2 py-1 mb-2 inline-block">
               <span className="text-xs font-bold text-orange-800">
-                {(SCOPE_PERCENTAGES as any)[currentPhase].manual}% of scope
+                {currentPhaseData.manualOutput.percentage}% of scope
               </span>
             </div>
-            <p className="text-orange-700 text-sm">{currentPhaseData.manualOutput}</p>
+            <p className="text-orange-700 text-sm">{currentPhaseData.manualOutput.deliverables}</p>
           </div>
           
           {/* Automated Process Output - spans 3 columns (HIL, SE, AD) */}
@@ -343,10 +343,10 @@ const InteractiveProcessDiagram = () => {
             <h4 className="font-bold text-blue-800 mb-2">Automated Process Output</h4>
             <div className="bg-blue-200 rounded px-2 py-1 mb-2 inline-block">
               <span className="text-xs font-bold text-blue-800">
-                {(SCOPE_PERCENTAGES as any)[currentPhase].automated}% of scope
+                {currentPhaseData.automatedOutput.percentage}% of scope
               </span>
             </div>
-            <p className="text-blue-700 text-sm">{currentPhaseData.automatedOutput}</p>
+            <p className="text-blue-700 text-sm">{currentPhaseData.automatedOutput.deliverables}</p>
           </div>
         </div>
 

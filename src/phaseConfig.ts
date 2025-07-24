@@ -1,9 +1,3 @@
-// CONFIGURABLE SCOPE PERCENTAGES - Edit these to adjust scope distribution
-export const SCOPE_PERCENTAGES = {
-  1: { manual: 80, automated: 20 },
-  2: { manual: 50, automated: 50 },
-  3: { manual: 20, automated: 80 }
-};
 
 // CONFIGURABLE COORDINATES - Edit these to adjust arrow positions
 // 4-column grid: DE (12.5%), HIL (37.5%), SE (62.5%), AD (87.5%)
@@ -68,8 +62,14 @@ export const phases = {
         ]
       }
     ],
-    automatedOutput: "Agent foundation + Context framework + Early agent deliverables",
-    manualOutput: "Baseline manual development + Traditional processes + Comparison metrics"
+    automatedOutput: {
+      percentage: 20,
+      deliverables: "Agent foundation + Context framework + Early agent deliverables"
+    },
+    manualOutput: {
+      percentage: 80,
+      deliverables: "Baseline manual development + Traditional processes + Comparison metrics"
+    }
   },
   2: {
     title: "Phase 2: Agent Integration - Balanced Automation", 
@@ -106,8 +106,14 @@ export const phases = {
         ]
       },
     ],
-    automatedOutput: "Reliable agent deliverables + Proven context models + Validated automation workflow",
-    manualOutput: "Complex manual features + Integration architecture + Quality assurance processes"
+    automatedOutput: {
+      percentage: 50,
+      deliverables: "Reliable agent deliverables + Proven context models + Validated automation workflow"
+    },
+    manualOutput: {
+      percentage: 50,
+      deliverables: "Complex manual features + Integration architecture + Quality assurance processes"
+    }
   },
   3: {
     title: "Phase 3: Automated Maturity - Optimized Efficiency",
@@ -157,7 +163,13 @@ export const phases = {
         ]
       }
     ],
-    automatedOutput: "Highly automated pipeline + Minimal cycle time + Production-ready deliverables",
-    manualOutput: "Strategic oversight + Exception handling + Critical deployment decisions"
+    automatedOutput: {
+      percentage: 80,
+      deliverables: "Highly automated pipeline + Minimal cycle time + Production-ready deliverables"
+    },
+    manualOutput: {
+      percentage: 20,
+      deliverables: "Strategic oversight + Exception handling + Critical deployment decisions"
+    }
   }
 };
