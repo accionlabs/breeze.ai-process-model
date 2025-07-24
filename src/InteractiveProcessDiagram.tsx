@@ -97,8 +97,8 @@ const InteractiveProcessDiagram = () => {
     const getTeamInfo = (team: string) => {
       return { 
         position: (TEAM_X_POSITIONS as any)[team] || 50, 
-        color: team === 'AD' ? 'bg-blue-50 border-blue-200' : 
-               team === 'SE' ? 'bg-purple-50 border-purple-200' : 'bg-green-50 border-green-200',
+        color: team === 'AD' ? 'bg-white/80 border-blue-200' : 
+               team === 'SE' ? 'bg-white/80 border-purple-200' : 'bg-white/80 border-green-200',
         textColor: team === 'AD' ? 'text-blue-700' : 
                   team === 'SE' ? 'text-purple-700' : 'text-green-700'
       };
@@ -374,7 +374,7 @@ const InteractiveProcessDiagram = () => {
       </div>
 
       {/* Phase Content */}
-      <div className={`border-2 rounded-lg p-6 ${currentPhaseData.color}`}>
+      <div className={`relative border-2 rounded-lg p-6 ${currentPhaseData.color}`}>
         {/* Phase Header */}
         <div className="text-center mb-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-2">{currentPhaseData.title}</h2>
@@ -397,8 +397,15 @@ const InteractiveProcessDiagram = () => {
           </div>
         </div>
 
+        {/* Team Column Backgrounds */}
+        <div className="absolute inset-0 grid grid-cols-3 gap-4 pointer-events-none">
+          <div className="bg-blue-50/30 rounded-lg"></div>
+          <div className="bg-purple-50/30 rounded-lg"></div>
+          <div className="bg-green-50/30 rounded-lg"></div>
+        </div>
+
         {/* Expandable Sections */}
-        <div className="space-y-4">
+        <div className="relative space-y-4">
           {currentPhaseData.sections.map((section: any) => (
             <div key={section.id} className={`border rounded-lg ${section.color}`}>
               <button
