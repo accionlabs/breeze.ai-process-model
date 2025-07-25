@@ -96,7 +96,7 @@ const InteractiveProcessDiagram = () => {
           left: `${teamInfo.position}%`,
           transform: 'translateX(-50%)',
           top: `${topOffset}px`,
-          width: '22%'  // Approximately 1/4 of container width to match grid columns
+          width: '21%'  // Properly sized to fit within grid columns
         }}
       >
         <ul className="space-y-1">
@@ -125,7 +125,7 @@ const InteractiveProcessDiagram = () => {
               <button
                 key={phase}
                 onClick={() => setCurrentPhase(phase)}
-                className={`relative p-6 rounded-xl border-2 text-left transition-all duration-300 transform hover:scale-105 ${
+                className={`relative p-6 rounded-xl border-2 text-left transition-all duration-300 transform hover:scale-105 h-40 flex flex-col ${
                   isActive 
                     ? 'border-blue-500 bg-blue-50 shadow-lg' 
                     : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
@@ -144,25 +144,17 @@ const InteractiveProcessDiagram = () => {
                   )}
                 </div>
                 
-                <h3 className={`font-bold text-lg mb-2 ${
+                <h3 className={`font-bold text-sm mb-2 flex-grow ${
                   isActive ? 'text-blue-900' : 'text-gray-800'
                 }`}>
-                  Phase {phase}
+                  Phase {phase}: {(phases as any)[phase].title}
                 </h3>
                 
-                <p className={`text-sm mb-3 ${
+                <p className={`text-xs mt-auto ${
                   isActive ? 'text-blue-700' : 'text-gray-600'
                 }`}>
-                  {(phases as any)[phase].manualOutput.percentage}% Manual, {(phases as any)[phase].automatedOutput.percentage}% Automated
+                  {(phases as any)[phase].manualOutput.percentage} Manual, {(phases as any)[phase].automatedOutput.percentage} Automated
                 </p>
-                
-                <div className={`text-xs font-medium ${
-                  isActive ? 'text-blue-600' : 'text-gray-500'
-                }`}>
-                  {phase === 1 && 'Foundation Building'}
-                  {phase === 2 && 'Balanced Integration'}  
-                  {phase === 3 && 'Optimized Automation'}
-                </div>
               </button>
             );
           })}
@@ -171,18 +163,32 @@ const InteractiveProcessDiagram = () => {
 
       {/* Phase Content */}
       <div className="relative border-2 rounded-lg p-6 bg-white/80 backdrop-blur-sm">
-        {/* Process Group Backgrounds - Only within phase container */}
-        <div className="absolute inset-0 grid grid-cols-4 gap-2 pointer-events-none z-0 p-6" style={{ top: '140px', bottom: '216px' }}>
-          <div className="bg-orange-200 rounded-lg opacity-30"></div>
-          <div className="bg-green-200 rounded-lg opacity-30"></div>
-          <div className="bg-purple-200 rounded-lg opacity-30"></div>
-          <div className="bg-blue-200 rounded-lg opacity-30"></div>
-        </div>
-        
         {/* Phase Header */}
         <div className="relative text-center mb-6 z-10">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">{currentPhaseData.title}</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Phase {currentPhase}: {currentPhaseData.title}</h2>
+          {currentPhaseData.description && (
+            <div className="text-sm text-gray-600 max-w-5xl mx-auto leading-relaxed text-left">
+              <ul className="space-y-2">
+                {currentPhaseData.description.split('. ').filter((sentence: string) => sentence.trim()).map((sentence: string, index: number) => (
+                  <li key={index} className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 flex-shrink-0"></span>
+                    <span>{sentence.trim()}{sentence.endsWith('.') ? '' : '.'}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
+
+        {/* Process Container with Column Backgrounds */}
+        <div className="relative">
+          {/* Process Group Backgrounds */}
+          <div className="absolute inset-0 grid grid-cols-4 gap-2 pointer-events-none z-0">
+            <div className="bg-orange-200 rounded-lg opacity-30"></div>
+            <div className="bg-green-200 rounded-lg opacity-30"></div>
+            <div className="bg-purple-200 rounded-lg opacity-30"></div>
+            <div className="bg-blue-200 rounded-lg opacity-30"></div>
+          </div>
 
         {/* Process Group Headers */}
         <div className="relative mb-6 z-10">
@@ -192,27 +198,35 @@ const InteractiveProcessDiagram = () => {
               <h3 className="font-bold text-orange-800 text-lg">Manual Process</h3>
             </div>
             <div className="col-span-3 bg-blue-100 border-2 border-blue-300 rounded-lg p-3 text-center">
-              <h3 className="font-bold text-blue-800 text-lg">Automated Process</h3>
+              <h3 className="font-bold text-blue-800 text-lg">Semantic Engineering Process</h3>
             </div>
           </div>
           
           {/* Team Headers */}
           <div className="grid grid-cols-4 gap-2">
-            <div className="bg-white/90 border border-orange-300 rounded-lg p-3 text-center backdrop-blur-sm">
-              <h3 className="font-bold text-orange-800 text-sm">Development Engineers</h3>
-              <p className="text-xs text-orange-600 mt-1">DE</p>
+            <div className="bg-gradient-to-b from-orange-50 to-orange-100 border-2 border-orange-400 rounded-xl p-4 text-center shadow-md">
+              <h3 className="font-semibold text-orange-900 text-base mb-1">Development Engineers</h3>
+              <div className="bg-orange-200 rounded-full px-3 py-1 inline-block">
+                <p className="text-xs font-bold text-orange-800">DE</p>
+              </div>
             </div>
-            <div className="bg-white/90 border border-green-300 rounded-lg p-3 text-center backdrop-blur-sm">
-              <h3 className="font-bold text-green-800 text-sm">Human In Loop</h3>
-              <p className="text-xs text-green-600 mt-1">HIL</p>
+            <div className="bg-gradient-to-b from-green-50 to-green-100 border-2 border-green-400 rounded-xl p-4 text-center shadow-md">
+              <h3 className="font-semibold text-green-900 text-base mb-1">Human In Loop</h3>
+              <div className="bg-green-200 rounded-full px-3 py-1 inline-block">
+                <p className="text-xs font-bold text-green-800">HIL</p>
+              </div>
             </div>
-            <div className="bg-white/90 border border-purple-300 rounded-lg p-3 text-center backdrop-blur-sm">
-              <h3 className="font-bold text-purple-800 text-sm">Semantic Engineers</h3>
-              <p className="text-xs text-purple-600 mt-1">SE</p>
+            <div className="bg-gradient-to-b from-purple-50 to-purple-100 border-2 border-purple-400 rounded-xl p-4 text-center shadow-md">
+              <h3 className="font-semibold text-purple-900 text-base mb-1">Semantic Engineers</h3>
+              <div className="bg-purple-200 rounded-full px-3 py-1 inline-block">
+                <p className="text-xs font-bold text-purple-800">SE</p>
+              </div>
             </div>
-            <div className="bg-white/90 border border-blue-300 rounded-lg p-3 text-center backdrop-blur-sm">
-              <h3 className="font-bold text-blue-800 text-sm">Agent Developers</h3>
-              <p className="text-xs text-blue-600 mt-1">AD</p>
+            <div className="bg-gradient-to-b from-blue-50 to-blue-100 border-2 border-blue-400 rounded-xl p-4 text-center shadow-md">
+              <h3 className="font-semibold text-blue-900 text-base mb-1">Agent Developers</h3>
+              <div className="bg-blue-200 rounded-full px-3 py-1 inline-block">
+                <p className="text-xs font-bold text-blue-800">AD</p>
+              </div>
             </div>
           </div>
         </div>
@@ -325,28 +339,29 @@ const InteractiveProcessDiagram = () => {
           ))}
         </div>
 
-        {/* Phase Outputs */}
-        <div className="relative mt-6 grid grid-cols-4 gap-2 z-10">
-          {/* Manual Process Output - matches DE column */}
-          <div className="bg-orange-100 border-2 border-orange-300 rounded-lg p-4 text-center">
-            <h4 className="font-bold text-orange-800 mb-2">Manual Process Output</h4>
-            <div className="bg-orange-200 rounded px-2 py-1 mb-2 inline-block">
-              <span className="text-xs font-bold text-orange-800">
-                {currentPhaseData.manualOutput.percentage}% of scope
-              </span>
+          {/* Phase Outputs */}
+          <div className="relative mt-6 grid grid-cols-4 gap-2 z-10">
+            {/* Manual Process Output - matches DE column */}
+            <div className="bg-orange-100 border-2 border-orange-300 rounded-lg p-4 text-center">
+              <h4 className="font-bold text-orange-800 mb-2">Manual Process Output</h4>
+              <div className="bg-orange-200 rounded px-2 py-1 mb-2 inline-block">
+                <span className="text-xs font-bold text-orange-800">
+                  {currentPhaseData.manualOutput.percentage} of scope
+                </span>
+              </div>
+              <p className="text-orange-700 text-sm">{currentPhaseData.manualOutput.deliverables}</p>
             </div>
-            <p className="text-orange-700 text-sm">{currentPhaseData.manualOutput.deliverables}</p>
-          </div>
-          
-          {/* Automated Process Output - spans 3 columns (HIL, SE, AD) */}
-          <div className="col-span-3 bg-blue-100 border-2 border-blue-300 rounded-lg p-4 text-center">
-            <h4 className="font-bold text-blue-800 mb-2">Automated Process Output</h4>
-            <div className="bg-blue-200 rounded px-2 py-1 mb-2 inline-block">
-              <span className="text-xs font-bold text-blue-800">
-                {currentPhaseData.automatedOutput.percentage}% of scope
-              </span>
+            
+            {/* Automated Process Output - spans 3 columns (HIL, SE, AD) */}
+            <div className="col-span-3 bg-blue-100 border-2 border-blue-300 rounded-lg p-4 text-center">
+              <h4 className="font-bold text-blue-800 mb-2">Semantic Engineering Output</h4>
+              <div className="bg-blue-200 rounded px-2 py-1 mb-2 inline-block">
+                <span className="text-xs font-bold text-blue-800">
+                  {currentPhaseData.automatedOutput.percentage} of scope
+                </span>
+              </div>
+              <p className="text-blue-700 text-sm">{currentPhaseData.automatedOutput.deliverables}</p>
             </div>
-            <p className="text-blue-700 text-sm">{currentPhaseData.automatedOutput.deliverables}</p>
           </div>
         </div>
 

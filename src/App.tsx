@@ -35,7 +35,7 @@ function App() {
             <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 bg-clip-text text-transparent">
               Breeze.AI
             </span>
-            {' '}- Agent Accelerated Software Engineering Process
+            {' '}- Transitioning from Manual Development to Semantic Engineering
           </h1>
           
           {/* Company Logo */}

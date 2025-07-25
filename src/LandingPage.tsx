@@ -61,13 +61,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterProcess }) => {
         </h1>
         
         <h2 className="text-2xl md:text-3xl font-semibold text-gray-700 mb-8">
-          Agent Accelerated Software Engineering Process
+          Transitioning from Manual Development to Semantic Engineering
         </h2>
 
         {/* Description */}
         <p className="text-lg text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
-          Discover our innovative three-phase development process that seamlessly integrates 
-          Agent Developers, Semantic Engineers, and Development Engineers to accelerate software delivery.
+          This three-phase methodology leverages the Breeze.AI framework to transition software development from traditional human-driven processes to AI-augmented semantic engineering, maintaining quality through continuous validation and human oversight.
         </p>
 
         {/* CTA Button */}
