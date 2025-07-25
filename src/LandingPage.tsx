@@ -78,35 +78,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterProcess }) => {
           <ArrowRight className="w-5 h-5" />
         </button>
 
-        {/* Feature highlights */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-          <div className="p-6">
-            <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
-              <span className="text-blue-600 font-bold text-sm">1</span>
-            </div>
-            <h3 className="font-semibold text-gray-800 mb-2">Phase 1: Foundation</h3>
-            <p className="text-gray-600 text-sm">80% Manual, 20% Automated</p>
-            <p className="text-gray-500 text-xs mt-1">Building agent foundations while maintaining manual processes</p>
-          </div>
-          
-          <div className="p-6">
-            <div className="w-16 h-16 mx-auto mb-4 bg-purple-100 rounded-full flex items-center justify-center">
-              <span className="text-purple-600 font-bold text-sm">2</span>
-            </div>
-            <h3 className="font-semibold text-gray-800 mb-2">Phase 2: Integration</h3>
-            <p className="text-gray-600 text-sm">50% Manual, 50% Automated</p>
-            <p className="text-gray-500 text-xs mt-1">Balanced approach with continuous refinement</p>
-          </div>
-          
-          <div className="p-6">
-            <div className="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
-              <span className="text-green-600 font-bold text-sm">3</span>
-            </div>
-            <h3 className="font-semibold text-gray-800 mb-2">Phase 3: Maturity</h3>
-            <p className="text-gray-600 text-sm">20% Manual, 80% Automated</p>
-            <p className="text-gray-500 text-xs mt-1">Optimized efficiency with minimal human oversight</p>
-          </div>
-        </div>
       </div>
     </div>
   );
