@@ -425,8 +425,8 @@ const InteractiveProcessDiagram = () => {
         <ul className="text-sm text-gray-600 space-y-1">
           <li>• Use the phase tabs to navigate between the three development phases</li>
           <li>• Click on any section header to expand/collapse detailed activities</li>
-          <li>• Arrows show communication flow between teams (AD = Agent Developers, SE = Semantic Engineers, DE = Development Engineers)</li>
-          <li>• Colored boxes show self-directed work within each team</li>
+          <li>• Arrows show communication flow between teams (AD = Agent Developers, SE = Semantic Engineers, HIL = Humans in Loop, DE = Development Engineers)</li>
+          <li>• Acitivities in boxes show self-directed work within each team</li>
         </ul>
       </div>
     </div>
