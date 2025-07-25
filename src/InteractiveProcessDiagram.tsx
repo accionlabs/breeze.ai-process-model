@@ -5,6 +5,7 @@ import { TEAM_X_POSITIONS, BOX_HEIGHTS, phases } from './phaseConfig';
 const InteractiveProcessDiagram = () => {
   const [currentPhase, setCurrentPhase] = useState(1);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
 
   const toggleSection = (sectionId: string) => {
@@ -165,9 +166,23 @@ const InteractiveProcessDiagram = () => {
       <div className="relative border-2 rounded-lg p-6 bg-white/80 backdrop-blur-sm">
         {/* Phase Header */}
         <div className="relative text-center mb-6 z-10">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Phase {currentPhase}: {currentPhaseData.title}</h2>
-          {currentPhaseData.description && (
-            <div className="text-sm text-gray-600 max-w-5xl mx-auto leading-relaxed text-left">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <h2 className="text-2xl font-bold text-gray-800">Phase {currentPhase}: {currentPhaseData.title}</h2>
+            {currentPhaseData.description && (
+              <button
+                onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
+                className="print:hidden text-gray-600 hover:text-gray-800 transition-colors"
+              >
+                {isDescriptionExpanded ? (
+                  <ChevronDown className="w-5 h-5" />
+                ) : (
+                  <ChevronRight className="w-5 h-5" />
+                )}
+              </button>
+            )}
+          </div>
+          {currentPhaseData.description && isDescriptionExpanded && (
+            <div className="max-w-5xl mx-auto text-sm text-gray-600 leading-relaxed text-left">
               <ul className="space-y-2">
                 {currentPhaseData.description.split('. ').filter((sentence: string) => sentence.trim()).map((sentence: string, index: number) => (
                   <li key={index} className="flex items-start gap-2">
@@ -242,11 +257,13 @@ const InteractiveProcessDiagram = () => {
                 <div className="flex-1">
                   <h4 className="font-bold text-gray-800 text-center">{section.title}</h4>
                 </div>
-                {expandedSections[section.id] ? (
-                  <ChevronDown className="w-5 h-5 text-gray-600" />
-                ) : (
-                  <ChevronRight className="w-5 h-5 text-gray-600" />
-                )}
+                <div className="print:hidden">
+                  {expandedSections[section.id] ? (
+                    <ChevronDown className="w-5 h-5 text-gray-600" />
+                  ) : (
+                    <ChevronRight className="w-5 h-5 text-gray-600" />
+                  )}
+                </div>
               </button>
               
               {expandedSections[section.id] && (

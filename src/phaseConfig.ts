@@ -102,7 +102,7 @@ export const phases = {
     sections: [
       {
         id: "bifurcation",
-        title: "̉Scope Bifurcation",
+        title: "Scope Bifurcation",
         activities: [
           { sequence: 1, type: 'self', team: 'DE', activities: ['Groomed Backlog'] },
           { sequence: 1, type: 'self', team: 'HIL', activities: ['Groomed Backlog'] },
@@ -169,7 +169,7 @@ export const phases = {
     sections: [
       {
         id: "bifurcation",
-        title: "̉Semantic First Execution",
+        title: "Semantic First Execution",
         activities: [
           { sequence: 1, type: 'self', team: 'DE', activities: ['Groomed Backlog'] },
           { sequence: 1, type: 'self', team: 'HIL', activities: ['Groomed Backlog'] },
