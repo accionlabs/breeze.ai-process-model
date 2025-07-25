@@ -3,9 +3,9 @@ import { ChevronDown, ChevronRight, ArrowRight, ArrowLeft } from 'lucide-react';
 import { TEAM_X_POSITIONS, BOX_HEIGHTS, phases } from './phaseConfig';
 
 const InteractiveProcessDiagram = () => {
-  const [currentPhase, setCurrentPhase] = useState(1);
+  const [currentPhase, setCurrentPhase] = useState<number | null>(null);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
-  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(true);
 
 
   const toggleSection = (sectionId: string) => {
@@ -113,7 +113,7 @@ const InteractiveProcessDiagram = () => {
   };
 
 
-  const currentPhaseData = (phases as any)[currentPhase];
+  const currentPhaseData = currentPhase ? (phases as any)[currentPhase] : null;
 
   return (
     <div className="max-w-6xl mx-auto p-6 bg-white">
@@ -163,6 +163,7 @@ const InteractiveProcessDiagram = () => {
       </div>
 
       {/* Phase Content */}
+      {currentPhase && (
       <div className="relative border-2 rounded-lg p-6 bg-white/80 backdrop-blur-sm">
         {/* Phase Header */}
         <div className="relative text-center mb-6 z-10">
@@ -385,7 +386,7 @@ const InteractiveProcessDiagram = () => {
         {/* Navigation Arrows */}
         <div className="print:hidden relative flex justify-between mt-6 z-10">
           <button
-            onClick={() => setCurrentPhase(Math.max(1, currentPhase - 1))}
+            onClick={() => setCurrentPhase(Math.max(1, (currentPhase || 1) - 1))}
             disabled={currentPhase === 1}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium ${
               currentPhase === 1 
@@ -398,7 +399,7 @@ const InteractiveProcessDiagram = () => {
           </button>
           
           <button
-            onClick={() => setCurrentPhase(Math.min(3, currentPhase + 1))}
+            onClick={() => setCurrentPhase(Math.min(3, (currentPhase || 1) + 1))}
             disabled={currentPhase === 3}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium ${
               currentPhase === 3 
@@ -416,6 +417,7 @@ const InteractiveProcessDiagram = () => {
           Phase {currentPhase} of 3
         </div>
       </div>
+      )}
 
       {/* Instructions */}
       <div className="print:hidden mt-6 bg-gray-50 rounded-lg p-4">
