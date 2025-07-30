@@ -1,37 +1,69 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import LandingPage from './LandingPage';
 import Layout from './components/Layout';
 import SemanticEngineer from './topics/SemanticEngineer';
 import ProcessFlow from './topics/ProcessFlow';
 import SemanticModel from './topics/SemanticModel';
+import { parseUrlHash, updateUrlHash, getInitialRouteState } from './utils/urlRouter';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState<'landing' | 'topic'>('landing');
-  const [currentTopic, setCurrentTopic] = useState<string>('semantic-engineer');
-  const [currentSubTopic, setCurrentSubTopic] = useState<string | undefined>(undefined);
+  // Initialize state from URL
+  const initialState = getInitialRouteState();
+  const [currentPage, setCurrentPage] = useState<'landing' | 'topic'>(initialState.page);
+  const [currentTopic, setCurrentTopic] = useState<string>(initialState.topic || 'semantic-engineer');
+  const [currentSubTopic, setCurrentSubTopic] = useState<string | undefined>(initialState.subTopic);
+
+  // Handle browser back/forward navigation
+  useEffect(() => {
+    const handleHashChange = () => {
+      const routeState = parseUrlHash();
+      setCurrentPage(routeState.page);
+      setCurrentTopic(routeState.topic || 'semantic-engineer');
+      setCurrentSubTopic(routeState.subTopic);
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   const handleEnterProcess = () => {
-    setCurrentPage('topic');
-    setCurrentTopic('process-flow');
-    setCurrentSubTopic('overview');
+    const newPage = 'topic';
+    const newTopic = 'process-flow';
+    const newSubTopic = 'overview';
+    
+    setCurrentPage(newPage);
+    setCurrentTopic(newTopic);
+    setCurrentSubTopic(newSubTopic);
+    updateUrlHash(newPage, newTopic, newSubTopic);
   };
 
   const handleEnterSemantic = () => {
-    setCurrentPage('topic');
-    setCurrentTopic('semantic-engineer');
-    setCurrentSubTopic('crisis');
+    const newPage = 'topic';
+    const newTopic = 'semantic-engineer';
+    const newSubTopic = 'crisis';
+    
+    setCurrentPage(newPage);
+    setCurrentTopic(newTopic);
+    setCurrentSubTopic(newSubTopic);
+    updateUrlHash(newPage, newTopic, newSubTopic);
   };
 
   const handleBackToLanding = () => {
-    setCurrentPage('landing');
+    const newPage = 'landing';
+    
+    setCurrentPage(newPage);
     setCurrentTopic('semantic-engineer');
     setCurrentSubTopic(undefined);
+    updateUrlHash(newPage);
   };
 
   const handleNavigate = (topicId: string, subTopicId?: string) => {
-    setCurrentPage('topic');
+    const newPage = 'topic';
+    
+    setCurrentPage(newPage);
     setCurrentTopic(topicId);
     setCurrentSubTopic(subTopicId);
+    updateUrlHash(newPage, topicId, subTopicId);
   };
 
   if (currentPage === 'landing') {
