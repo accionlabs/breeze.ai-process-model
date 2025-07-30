@@ -3,9 +3,10 @@ import { ArrowRight } from 'lucide-react';
 
 interface LandingPageProps {
   onEnterProcess: () => void;
+  onEnterSemantic: () => void;
 }
 
-const LandingPage: React.FC<LandingPageProps> = ({ onEnterProcess }) => {
+const LandingPage: React.FC<LandingPageProps> = ({ onEnterSemantic }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-green-50 flex items-center justify-center p-6">
       {/* Company Logo - Top Right */}
@@ -61,22 +62,89 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterProcess }) => {
         </h1>
         
         <h2 className="text-2xl md:text-3xl font-semibold text-gray-700 mb-8">
-          Transitioning from Manual Development to Semantic Engineering
+          The Future of Software Engineering
         </h2>
 
-        {/* Description */}
-        <p className="text-lg text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
-          This three-phase methodology leverages the Breeze.AI framework to transition software development from traditional human-driven processes to AI-augmented semantic engineering, maintaining quality through continuous validation and human oversight.
-        </p>
+        {/* Storyline Overview */}
+        <div className="max-w-4xl mx-auto mb-12">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg mb-8">
+            <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">The Journey Ahead</h3>
+            
+            <div className="space-y-6 text-left">
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <span className="text-red-600 font-bold text-sm">1</span>
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-800 mb-2">The Crisis: Are Software Engineers Redundant?</h4>
+                  <p className="text-gray-600">
+                    AI systems can now code, test, deploy, and even design architectures. Traditional software engineering roles face unprecedented disruption. 
+                    The question is no longer "if" but "how" engineers must evolve to remain relevant.
+                  </p>
+                </div>
+              </div>
 
-        {/* CTA Button */}
-        <button
-          onClick={onEnterProcess}
-          className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-lg px-8 py-4 rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
-        >
-          Explore Process Flow
-          <ArrowRight className="w-5 h-5" />
-        </button>
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <span className="text-purple-600 font-bold text-sm">2</span>
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-800 mb-2">The Evolution: From Code Writers to Semantic Engineers</h4>
+                  <p className="text-gray-600">
+                    Throughout history, each era automated the previous era's work. Now it's happening again. 
+                    Engineers must transform across four dimensions and evolve into semantic engineers who orchestrate intelligent systems.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <span className="text-blue-600 font-bold text-sm">3</span>
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-800 mb-2">The Model: A Unified Semantic Framework</h4>
+                  <p className="text-gray-600">
+                    Four interconnected ontologies provide comprehensive governance across application portfolios: 
+                    Functional (what users want), Design (how it looks), Architecture (technical structure), and Code (what actually runs).
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <span className="text-green-600 font-bold text-sm">4</span>
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-800 mb-2">The Process: Three-Phase Transformation</h4>
+                  <p className="text-gray-600">
+                    A practical methodology that transitions teams from manual development (15% manual) through balanced collaboration (30% manual) 
+                    to full semantic engineering (5% manual) while maintaining quality and control.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Call to Action */}
+          <div className="text-center">
+            <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+              Discover how to navigate this transformation and position yourself at the forefront of software engineering's next evolution.
+            </p>
+            
+            <button
+              onClick={onEnterSemantic}
+              className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 via-blue-600 to-green-600 text-white font-bold text-xl px-12 py-5 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300"
+            >
+              <span className="text-2xl">🚀</span>
+              Begin the Journey
+              <ArrowRight className="w-6 h-6" />
+            </button>
+            
+            <p className="text-sm text-gray-500 mt-4">
+              Start with understanding the crisis facing software engineers today
+            </p>
+          </div>
+        </div>
 
       </div>
     </div>

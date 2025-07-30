@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronRight, ArrowRight, ArrowLeft } from 'lucide-react';
-import { TEAM_X_POSITIONS, BOX_HEIGHTS, phases } from './phaseConfig';
+import { TEAM_X_POSITIONS, BOX_HEIGHTS, phases } from './topics/ProcessFlow/phaseConfig';
 
 const InteractiveProcessDiagram = () => {
   const [currentPhase, setCurrentPhase] = useState<number | null>(null);

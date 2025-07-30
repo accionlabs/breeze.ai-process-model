@@ -1,66 +1,97 @@
 import { useState } from 'react';
 import LandingPage from './LandingPage';
-import InteractiveProcessDiagram from './InteractiveProcessDiagram';
-import { ArrowLeft } from 'lucide-react';
+import Layout from './components/Layout';
+import SemanticEngineer from './topics/SemanticEngineer';
+import ProcessFlow from './topics/ProcessFlow';
+import SemanticModel from './topics/SemanticModel';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState<'landing' | 'process'>('landing');
+  const [currentPage, setCurrentPage] = useState<'landing' | 'topic'>('landing');
+  const [currentTopic, setCurrentTopic] = useState<string>('semantic-engineer');
+  const [currentSubTopic, setCurrentSubTopic] = useState<string | undefined>(undefined);
 
   const handleEnterProcess = () => {
-    setCurrentPage('process');
+    setCurrentPage('topic');
+    setCurrentTopic('process-flow');
+    setCurrentSubTopic('overview');
+  };
+
+  const handleEnterSemantic = () => {
+    setCurrentPage('topic');
+    setCurrentTopic('semantic-engineer');
+    setCurrentSubTopic('crisis');
   };
 
   const handleBackToLanding = () => {
     setCurrentPage('landing');
+    setCurrentTopic('semantic-engineer');
+    setCurrentSubTopic(undefined);
+  };
+
+  const handleNavigate = (topicId: string, subTopicId?: string) => {
+    setCurrentPage('topic');
+    setCurrentTopic(topicId);
+    setCurrentSubTopic(subTopicId);
   };
 
   if (currentPage === 'landing') {
-    return <LandingPage onEnterProcess={handleEnterProcess} />;
+    return <LandingPage onEnterProcess={handleEnterProcess} onEnterSemantic={handleEnterSemantic} />;
   }
 
+  const renderCurrentTopic = () => {
+    switch (currentTopic) {
+      case 'semantic-engineer':
+        return (
+          <SemanticEngineer 
+            initialScreen={currentSubTopic || 'crisis'}
+            onNavigate={handleNavigate}
+            currentTopic={currentTopic}
+            currentSubTopic={currentSubTopic}
+            onHome={handleBackToLanding}
+          />
+        );
+      case 'process-flow':
+        return (
+          <ProcessFlow 
+            initialScreen={currentSubTopic || 'overview'}
+            onNavigate={handleNavigate}
+            currentTopic={currentTopic}
+            currentSubTopic={currentSubTopic}
+            onHome={handleBackToLanding}
+          />
+        );
+      case 'semantic-model':
+        return (
+          <SemanticModel 
+            initialScreen={currentSubTopic || 'overview'}
+            onNavigate={handleNavigate}
+            currentTopic={currentTopic}
+            currentSubTopic={currentSubTopic}
+            onHome={handleBackToLanding}
+          />
+        );
+      default:
+        return (
+          <SemanticEngineer 
+            initialScreen="crisis"
+            onNavigate={handleNavigate}
+            currentTopic={currentTopic}
+            currentSubTopic={currentSubTopic}
+            onHome={handleBackToLanding}
+          />
+        );
+    }
+  };
+
   return (
-    <div className="App">
-      {/* Header with back button and title */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-50 print:static print:border-none">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between print:justify-center">
-          <button
-            onClick={handleBackToLanding}
-            className="print:hidden flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            Back to Home
-          </button>
-          
-          <h1 className="text-xl font-bold text-gray-800 print:text-center">
-            <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 bg-clip-text text-transparent">
-              Breeze.AI
-            </span>
-            {' '}- Transitioning from Manual Development to Semantic Engineering
-          </h1>
-          
-          {/* Company Logo */}
-          <div className="print:hidden flex items-center">
-            <img 
-              src="/breeze.ai-process-model/company-logo.png" 
-              alt="Company Logo" 
-              className="h-10 w-auto object-contain"
-              onError={(e) => {
-                // Fallback to placeholder if company logo doesn't load
-                e.currentTarget.style.display = 'none';
-                const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
-                if (nextElement) nextElement.style.display = 'block';
-              }}
-            />
-            {/* Fallback placeholder */}
-            <div className="h-10 px-3 bg-gray-200 rounded flex items-center justify-center text-gray-600 text-sm font-medium" style={{display: 'none'}}>
-              Company
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <InteractiveProcessDiagram />
-    </div>
+    <Layout
+      currentTopic={currentTopic}
+      currentSubTopic={currentSubTopic}
+      onNavigate={handleNavigate}
+      onHome={handleBackToLanding}
+    >
+      {renderCurrentTopic()}
+    </Layout>
   );
 }
 
