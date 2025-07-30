@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronRight, Menu, X, Brain, Workflow, Home, Database } from 'lucide-react';
+import { navigationConfig } from '../config/navigationConfig';
 
 interface NavigationItem {
   id: string;
@@ -23,43 +24,49 @@ const Navigation: React.FC<NavigationProps> = ({ currentTopic, currentSubTopic, 
   const [isOpen, setIsOpen] = useState(false);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set([currentTopic]));
 
-  const navigationItems: NavigationItem[] = [
-    {
-      id: 'semantic-engineer',
-      title: 'The Semantic Engineer',
-      icon: <Brain className="w-5 h-5" />,
-      subItems: [
-        { id: 'crisis', title: 'The Crisis', description: 'Are software engineers redundant?' },
-        { id: 'evolution', title: 'Era Evolution', description: 'Historical progression and complexity' },
-        { id: 'transformation', title: 'Four Dimensions', description: 'Transformation paradigms' }
-      ]
-    },
-    {
-      id: 'semantic-model',
-      title: 'Semantic Model Structure',
-      icon: <Database className="w-5 h-5" />,
-      subItems: [
-        { id: 'overview', title: 'Framework Overview', description: 'Four interconnected ontologies' },
-        { id: 'functional', title: 'Functional Ontology', description: 'Modality-agnostic user needs' },
-        { id: 'design', title: 'Design Ontology', description: 'Physical UX implementation' },
-        { id: 'architecture', title: 'Architecture Ontology', description: 'Logical technical design' },
-        { id: 'code', title: 'Code Ontology', description: 'Physical implementation units' },
-        { id: 'relationships', title: 'Cross-Ontology Relationships', description: 'Formal mappings and governance' },
-        { id: 'agents-layer', title: 'Agents Layer Deep Dive', description: 'Intelligent orchestration and autonomous capabilities' }
-      ]
-    },
-    {
-      id: 'process-flow',
-      title: 'Breeze.AI Process',
-      icon: <Workflow className="w-5 h-5" />,
-      subItems: [
-        { id: 'overview', title: 'Process Overview', description: 'Three-phase methodology introduction' },
-        { id: 'phase1', title: 'Phase 1: Foundation', description: 'Semantic Engineering Foundation (15% Manual)' },
-        { id: 'phase2', title: 'Phase 2: Evolution', description: 'Semantic Engineering Evolution (30% Manual)' },
-        { id: 'phase3', title: 'Phase 3: Semantic First', description: 'Semantic First Engineering (5% Manual)' }
-      ]
+  // Auto-expand current topic when it changes
+  useEffect(() => {
+    if (currentTopic) {
+      setExpandedItems(prev => new Set([...prev, currentTopic]));
     }
-  ];
+  }, [currentTopic]);
+
+  // Scroll to active navigation item when topic/subtopic changes
+  useEffect(() => {
+    if (currentTopic && currentSubTopic) {
+      // Use a small delay to ensure the DOM has updated
+      setTimeout(() => {
+        const activeElement = document.querySelector(`[data-nav-item="${currentTopic}-${currentSubTopic}"]`);
+        if (activeElement) {
+          activeElement.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center',
+            inline: 'nearest' 
+          });
+        }
+      }, 100);
+    }
+  }, [currentTopic, currentSubTopic]);
+
+  const getIconForTopic = (topicId: string) => {
+    switch (topicId) {
+      case 'semantic-engineer':
+        return <Brain className="w-5 h-5" />;
+      case 'semantic-model':
+        return <Database className="w-5 h-5" />;
+      case 'process-flow':
+        return <Workflow className="w-5 h-5" />;
+      default:
+        return <Brain className="w-5 h-5" />;
+    }
+  };
+
+  const navigationItems: NavigationItem[] = navigationConfig.map(topic => ({
+    id: topic.id,
+    title: topic.title,
+    icon: getIconForTopic(topic.id),
+    subItems: topic.subItems
+  }));
 
   const toggleExpanded = (itemId: string) => {
     const newExpanded = new Set(expandedItems);
@@ -142,6 +149,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentTopic, currentSubTopic, 
                       <button
                         key={subItem.id}
                         onClick={() => handleNavigate(item.id, subItem.id)}
+                        data-nav-item={`${item.id}-${subItem.id}`}
                         className={`w-full text-left p-2 rounded-md text-sm transition-colors ${
                           isCurrentSubTopic
                             ? 'bg-blue-100 text-blue-800 border border-blue-200'
