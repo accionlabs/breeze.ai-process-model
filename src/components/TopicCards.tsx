@@ -415,7 +415,7 @@ const TopicCards: React.FC<TopicCardsProps> = ({
 
           {/* Mode Label and Counter */}
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-gray-700">
+            <span className="text-sm font-medium text-gray-700 hidden md:block">
               {isSlideMode ? 'Slide Mode' : 'Document Mode'}
             </span>
             {isSlideMode && slides.length > 0 && (
