@@ -133,7 +133,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterSemantic, onEnterArchi
             <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-6 rounded-xl border border-purple-200 text-center">
               <h4 className="font-bold text-gray-800 mb-3">Why This Matters Now</h4>
               <p className="text-gray-700 text-lg mb-4">
-                <strong>95% automation</strong> of software development while maintaining <strong>complete human control</strong> 
+                <strong>95% automation</strong> of software development while maintaining <strong>complete human control </strong> 
                 over business logic and architectural decisions
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
