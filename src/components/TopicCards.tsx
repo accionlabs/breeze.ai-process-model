@@ -171,6 +171,16 @@ const TopicCards: React.FC<TopicCardsProps> = ({
           element.classList.remove('slide-visible');
         }
       });
+      
+      // Scroll to the card content (below breadcrumbs) when slide changes
+      if (contentRef.current) {
+        const rect = contentRef.current.getBoundingClientRect();
+        const targetY = window.scrollY + rect.top - 50; // 50px margin from top
+        window.scrollTo({ 
+          top: targetY, 
+          behavior: 'smooth' 
+        });
+      }
     } else if (!isSlideMode && slides.length > 0) {
       // Reset all slides to visible when not in slide mode
       slides.forEach((slide) => {
@@ -288,7 +298,7 @@ const TopicCards: React.FC<TopicCardsProps> = ({
     <div className="max-w-6xl mx-auto">
       {/* Breadcrumb Navigation and View Mode Toggle */}
       <div className="flex items-center justify-between mb-8 print:hidden">
-        <nav className="breadcrumbs" aria-label="Breadcrumb">
+        <nav className="breadcrumbs hidden md:block" aria-label="Breadcrumb">
           <div className="flex items-center space-x-2 text-sm">
             {/* Home */}
             {onHome && (
@@ -327,37 +337,67 @@ const TopicCards: React.FC<TopicCardsProps> = ({
             )}
           </div>
         </nav>
+        
+        {/* Mobile-only simplified breadcrumb */}
+        <nav className="breadcrumbs md:hidden" aria-label="Breadcrumb">
+          <div className="flex items-center space-x-2 text-sm">
+            {onHome && (
+              <button
+                onClick={onHome}
+                className="flex items-center gap-1 text-gray-500 hover:text-gray-700 transition-colors"
+              >
+                <Home className="w-4 h-4" />
+              </button>
+            )}
+            {onHome && subTopic && (
+              <ChevronRight className="w-4 h-4 text-gray-400" />
+            )}
+            {subTopic && (
+              <span className="text-gray-900 font-medium text-xs truncate max-w-32">
+                {subTopic.title}
+              </span>
+            )}
+          </div>
+        </nav>
 
         {/* View Mode Toggle */}
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">View:</span>
-          <button
-            onClick={toggleSlideMode}
-            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-              isSlideMode 
-                ? 'bg-blue-100 text-blue-700 border border-blue-200' 
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            {isSlideMode ? (
-              <>
-                <Presentation className="w-4 h-4" />
-                <span>Slides</span>
-                <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-full">
-                  {currentSlideIndex + 1}/{slides.length}
-                </span>
-              </>
-            ) : (
-              <>
-                <FileText className="w-4 h-4" />
-                <span>Document</span>
-              </>
+        <div className="flex items-center gap-3">
+          {/* Toggle Switch */}
+          <div className="flex items-center gap-2">
+            <FileText className="w-4 h-4 text-gray-600" />
+            <div className="relative">
+              <button
+                onClick={toggleSlideMode}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                  isSlideMode ? 'bg-blue-600' : 'bg-gray-300'
+                }`}
+                title={isSlideMode ? 'Switch to Document Mode' : 'Switch to Slide Mode'}
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                    isSlideMode ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+            </div>
+            <Presentation className="w-4 h-4 text-gray-600" />
+          </div>
+
+          {/* Mode Label and Counter */}
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium text-gray-700">
+              {isSlideMode ? 'Slide Mode' : 'Document Mode'}
+            </span>
+            {isSlideMode && slides.length > 0 && (
+              <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium">
+                {currentSlideIndex + 1}/{slides.length}
+              </span>
             )}
-          </button>
+          </div>
           
           {/* Keyboard shortcuts hint */}
           {isSlideMode && (
-            <div className="text-xs text-gray-500 ml-2">
+            <div className="text-xs text-gray-500 ml-2 hidden md:block">
               Use ←→ or spacebar to navigate • Esc to exit
             </div>
           )}
@@ -367,10 +407,10 @@ const TopicCards: React.FC<TopicCardsProps> = ({
       {/* Current Card Content */}
       <div className="mb-8 pb-24">
         {CurrentComponent && (
-          <div className={`bg-white rounded-xl shadow-lg p-8 ${isSlideMode ? 'slide-mode' : ''}`}>
+          <div className={`bg-white rounded-xl shadow-lg p-4 md:p-8 ${isSlideMode ? 'slide-mode' : ''}`}>
             <div 
               ref={contentRef} 
-              className={isSlideMode ? 'slide-container' : ''}
+              className={`${isSlideMode ? 'slide-container' : ''} mobile-scale md:transform-none`}
               style={isSlideMode ? { minHeight: '400px' } : {}}
             >
               <CurrentComponent 
@@ -385,57 +425,59 @@ const TopicCards: React.FC<TopicCardsProps> = ({
 
       {/* Navigation Controls - Fixed to bottom */}
       <div className="fixed bottom-0 left-0 right-0 lg:left-80 fixed-bottom-nav border-t border-gray-200 shadow-lg z-50 print:hidden">
-        <div className="max-w-6xl mx-auto px-6 py-4">
+        <div className="max-w-6xl mx-auto px-2 md:px-6 py-2 md:py-4 mobile-nav-compact md:mobile-nav-normal">
           {/* Slide Mode Layout */}
           {isSlideMode ? (
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-1 md:gap-4">
               {/* Left: Topic Previous */}
               <button
                 onClick={goToPrevious}
                 disabled={!previousItem}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
+                className={`flex items-center gap-1 px-2 py-2 md:px-4 md:py-2 rounded-lg font-medium transition-all text-xs md:text-sm ${
                   !previousItem
                     ? 'text-gray-400 cursor-not-allowed'
                     : 'text-gray-600 hover:bg-gray-100'
                 }`}
               >
-                <ChevronLeft className="w-4 h-4" />
-                <div className="text-left">
+                <ChevronLeft className="w-3 h-3 md:w-4 md:h-4" />
+                <div className="text-left hidden sm:block">
                   {previousItem && (
-                    <div className="text-sm font-medium">{previousItem.title}</div>
+                    <div className="text-xs md:text-sm font-medium">
+                      Previous Topic
+                    </div>
                   )}
                 </div>
               </button>
 
               {/* Center: Slide Navigation Controls */}
               {slides.length > 0 && (
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-1 md:gap-3">
                   <button
                     onClick={goToPreviousSlide}
-                    className={`flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                    className={`flex items-center gap-1 px-2 py-1 md:px-4 md:py-2 rounded-lg text-xs md:text-sm font-medium transition-all ${
                       currentSlideIndex === 0 && previousItem
                         ? 'text-blue-600 bg-blue-50 hover:bg-blue-100 border border-blue-200'
                         : 'text-white bg-gradient-to-r from-gray-600 to-gray-700 hover:shadow-lg border border-gray-600'
                     }`}
                     title={currentSlideIndex === 0 && previousItem ? `Go to previous topic: ${previousItem.title}` : 'Go to previous slide'}
                   >
-                    <ChevronLeft className="w-4 h-4" />
+                    <ChevronLeft className="w-3 h-3 md:w-4 md:h-4" />
                     {currentSlideIndex === 0 && previousItem ? (
-                      <span className="text-xs font-medium">
-                        ← Previous Topic
+                      <span className="text-xs font-medium hidden sm:inline">
+                        ← Topic
                       </span>
                     ) : (
-                      "Previous Slide"
+                      <span className="hidden sm:inline">Previous</span>
                     )}
                   </button>
                   
-                  <span className="text-sm text-gray-500 px-3 font-medium">
-                    {slidesLoading ? 'Loading...' : slides.length > 0 ? `${currentSlideIndex + 1} of ${slides.length}` : 'No slides'}
+                  <span className="text-xs md:text-sm text-gray-500 px-1 md:px-3 font-medium slide-counter">
+                    {slidesLoading ? '...' : slides.length > 0 ? `${currentSlideIndex + 1}/${slides.length}` : '0'}
                   </span>
                   
                   <button
                     onClick={goToNextSlide}
-                    className={`flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                    className={`flex items-center gap-1 px-2 py-1 md:px-4 md:py-2 rounded-lg text-xs md:text-sm font-medium transition-all ${
                       currentSlideIndex === slides.length - 1 && (nextItem || !nextItem)
                         ? 'text-blue-600 bg-blue-50 hover:bg-blue-100 border border-blue-200'
                         : 'text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:shadow-lg'
@@ -449,15 +491,15 @@ const TopicCards: React.FC<TopicCardsProps> = ({
                     }
                   >
                     {currentSlideIndex === slides.length - 1 && nextItem ? (
-                      <span className="text-xs font-medium">
-                        Next Topic →
+                      <span className="text-xs font-medium hidden sm:inline">
+                        Topic →
                       </span>
                     ) : currentSlideIndex === slides.length - 1 && !nextItem ? (
-                      <span className="text-xs font-medium">{completionButtonText}</span>
+                      <span className="text-xs font-medium">{completionButtonText.split(' ')[0]}</span>
                     ) : (
-                      "Next Slide"
+                      <span className="hidden sm:inline">Next</span>
                     )}
-                    <ChevronRight className="w-4 h-4" />
+                    <ChevronRight className="w-3 h-3 md:w-4 md:h-4" />
                   </button>
                 </div>
               )}
@@ -465,36 +507,40 @@ const TopicCards: React.FC<TopicCardsProps> = ({
               {/* Right: Topic Next */}
               <button
                 onClick={goToNext}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 border border-gray-300 transition-all"
+                className="flex items-center gap-1 px-2 py-2 md:px-4 md:py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 border border-gray-300 transition-all text-xs md:text-sm"
               >
-                <div className="text-right">
+                <div className="text-right hidden sm:block">
                   {nextItem ? (
-                    <div className="text-sm font-medium">{nextItem.title}</div>
+                    <div className="text-xs md:text-sm font-medium">
+                      Next Topic
+                    </div>
                   ) : (
-                    <div className="text-sm font-medium">{completionButtonText}</div>
+                    <div className="text-xs md:text-sm font-medium">{completionButtonText.split(' ')[0]}</div>
                   )}
                 </div>
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="w-3 h-3 md:w-4 md:h-4" />
               </button>
             </div>
           ) : (
             /* Document Mode Layout */
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center gap-2">
               <button
                 onClick={goToPrevious}
                 disabled={!previousItem}
-                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
+                className={`flex items-center gap-1 md:gap-2 px-3 py-2 md:px-6 md:py-3 rounded-lg font-medium transition-all text-xs md:text-sm ${
                   !previousItem
                     ? 'text-gray-400 cursor-not-allowed'
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
-                <ChevronLeft className="w-5 h-5" />
+                <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
                 <div className="text-left">
                   {previousItem && (
                     <>
-                      <div className="text-xs text-gray-500">Previous</div>
-                      <div className="text-sm font-medium">{previousItem.title}</div>
+                      <div className="text-xs text-gray-500 hidden md:block">Previous</div>
+                      <div className="text-xs md:text-sm font-medium">
+                        Previous Topic
+                      </div>
                     </>
                   )}
                 </div>
@@ -502,19 +548,21 @@ const TopicCards: React.FC<TopicCardsProps> = ({
 
               <button
                 onClick={goToNext}
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:shadow-lg transition-all"
+                className="flex items-center gap-1 md:gap-2 px-3 py-2 md:px-6 md:py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:shadow-lg transition-all text-xs md:text-sm"
               >
                 <div className="text-right">
                   {nextItem ? (
                     <>
-                      <div className="text-xs text-blue-200">Next</div>
-                      <div className="text-sm font-medium">{nextItem.title}</div>
+                      <div className="text-xs text-blue-200 hidden md:block">Next</div>
+                      <div className="text-xs md:text-sm font-medium">
+                        Next Topic
+                      </div>
                     </>
                   ) : (
-                    <div className="text-sm font-medium">{completionButtonText}</div>
+                    <div className="text-xs md:text-sm font-medium">{completionButtonText}</div>
                   )}
                 </div>
-                <ChevronRight className="w-5 h-5" />
+                <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
               </button>
             </div>
           )}

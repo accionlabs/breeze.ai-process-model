@@ -125,3 +125,34 @@ body {
 .slide-container {
   scroll-behavior: smooth;
 }
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  /* Scale down content on mobile to prevent horizontal compression */
+  .mobile-scale {
+    transform: scale(0.75);
+    transform-origin: top left;
+    width: 133.33%; /* Compensate for 0.75 scale: 1/0.75 = 1.33 */
+  }
+  
+  /* Ensure mobile scaling doesn't create horizontal overflow */
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* Compact navigation on mobile */
+  .mobile-nav-compact {
+    padding: 0.5rem;
+    font-size: 0.75rem;
+  }
+  
+  .mobile-nav-compact button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+  }
+  
+  .mobile-nav-compact .slide-counter {
+    font-size: 0.6875rem;
+    padding: 0.25rem 0.5rem;
+  }
+}
