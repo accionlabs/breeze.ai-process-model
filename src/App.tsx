@@ -49,6 +49,17 @@ function App() {
     updateUrlHash(newPage, newTopic, newSubTopic);
   };
 
+  const handleEnterArchitecture = () => {
+    const newPage = 'topic';
+    const newTopic = 'architecture';
+    const newSubTopic = 'overview';
+    
+    setCurrentPage(newPage);
+    setCurrentTopic(newTopic);
+    setCurrentSubTopic(newSubTopic);
+    updateUrlHash(newPage, newTopic, newSubTopic);
+  };
+
   const handleBackToLanding = () => {
     const newPage = 'landing';
     
@@ -68,7 +79,7 @@ function App() {
   };
 
   if (currentPage === 'landing') {
-    return <LandingPage onEnterProcess={handleEnterProcess} onEnterSemantic={handleEnterSemantic} />;
+    return <LandingPage onEnterProcess={handleEnterProcess} onEnterSemantic={handleEnterSemantic} onEnterArchitecture={handleEnterArchitecture} />;
   }
 
   const renderCurrentTopic = () => {
