@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import LandingPage from './LandingPage';
 import Layout from './components/Layout';
-import SemanticEngineer from './topics/SemanticEngineer';
+import Challenge from './topics/Challenge';
+import Architecture from './topics/Architecture';
 import ProcessFlow from './topics/ProcessFlow';
 import SemanticModel from './topics/SemanticModel';
 import { parseUrlHash, updateUrlHash, getInitialRouteState } from './utils/urlRouter';
@@ -39,8 +40,8 @@ function App() {
 
   const handleEnterSemantic = () => {
     const newPage = 'topic';
-    const newTopic = 'semantic-engineer';
-    const newSubTopic = 'crisis';
+    const newTopic = 'challenge';
+    const newSubTopic = 'manual-translation-tax';
     
     setCurrentPage(newPage);
     setCurrentTopic(newTopic);
@@ -72,10 +73,20 @@ function App() {
 
   const renderCurrentTopic = () => {
     switch (currentTopic) {
-      case 'semantic-engineer':
+      case 'challenge':
         return (
-          <SemanticEngineer 
-            initialScreen={currentSubTopic || 'crisis'}
+          <Challenge 
+            initialScreen={currentSubTopic || 'manual-translation-tax'}
+            onNavigate={handleNavigate}
+            currentTopic={currentTopic}
+            currentSubTopic={currentSubTopic}
+            onHome={handleBackToLanding}
+          />
+        );
+      case 'architecture':
+        return (
+          <Architecture 
+            initialScreen={currentSubTopic || 'overview'}
             onNavigate={handleNavigate}
             currentTopic={currentTopic}
             currentSubTopic={currentSubTopic}
@@ -104,8 +115,8 @@ function App() {
         );
       default:
         return (
-          <SemanticEngineer 
-            initialScreen="crisis"
+          <Challenge 
+            initialScreen="manual-translation-tax"
             onNavigate={handleNavigate}
             currentTopic={currentTopic}
             currentSubTopic={currentSubTopic}

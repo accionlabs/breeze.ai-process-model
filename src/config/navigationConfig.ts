@@ -13,12 +13,27 @@ export interface TopicItem {
 
 export const navigationConfig: TopicItem[] = [
   {
-    id: 'semantic-engineer',
-    title: 'The Semantic Engineer',
+    id: 'challenge',
+    title: 'The Challenge & The Breeze.AI Solution',
     subItems: [
-      { id: 'crisis', title: 'The Crisis', description: 'Are software engineers redundant?' },
-      { id: 'evolution', title: 'Era Evolution', description: 'Historical progression and complexity' },
-      { id: 'transformation', title: 'Four Dimensions', description: 'Transformation paradigms' }
+      { id: 'manual-translation-tax', title: 'The Manual Translation Tax Crisis', description: 'Core problems: ambiguity, technical debt, specification drift' },
+      { id: 'traditional-approaches', title: 'Why Traditional Approaches Fail', description: 'Waterfall impossibility, Agile architecture gaps, BDD overhead' },
+      { id: 'breeze-breakthrough', title: 'The Breeze.AI Breakthrough', description: 'Machine-readable knowledge graphs eliminate translation tax' },
+      { id: 'revolutionary-capabilities', title: 'Revolutionary Capabilities', description: 'Perfect traceability, automatic change propagation, zero ambiguity' },
+      { id: 'legacy-transformation', title: 'Legacy System Transformation', description: 'Automatic knowledge extraction and modernization' },
+      { id: 'competitive-advantages', title: 'Competitive Advantages', description: 'Why Breeze.AI surpasses standard AI tools like Copilot/Cursor' }
+    ]
+  },
+  {
+    id: 'architecture',
+    title: 'System Architecture & Components',
+    subItems: [
+      { id: 'overview', title: 'Architecture Overview', description: 'High-level system architecture and design principles' },
+      { id: 'core-components', title: 'Core Components Summary', description: 'Essential system components and their responsibilities' },
+      { id: 'component-interactions', title: 'Component Interactions', description: 'How system components communicate and collaborate' },
+      { id: 'integration-points', title: 'Integration Points', description: 'External system interfaces and integration patterns' },
+      { id: 'scalability-performance', title: 'Scalability & Performance', description: 'System scaling strategies and performance characteristics' },
+      { id: 'security-compliance', title: 'Security & Compliance', description: 'Security framework and compliance capabilities' }
     ]
   },
   {

@@ -11,23 +11,25 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children, currentTopic, currentSubTopic, onNavigate, onHome }) => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      {/* Navigation */}
-      <Navigation 
-        currentTopic={currentTopic}
-        currentSubTopic={currentSubTopic}
-        onNavigate={onNavigate}
-        onHome={onHome}
-      />
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 print:bg-white">
+      {/* Navigation - Hidden in print */}
+      <div className="print:hidden">
+        <Navigation 
+          currentTopic={currentTopic}
+          currentSubTopic={currentSubTopic}
+          onNavigate={onNavigate}
+          onHome={onHome}
+        />
+      </div>
 
       {/* Main Content */}
-      <main className="lg:pl-80">
-        <div className="min-h-screen">
-          {/* Header Space for Mobile Menu */}
-          <div className="lg:hidden h-16" />
+      <main className="lg:pl-80 print:pl-0">
+        <div className="min-h-screen print:min-h-0">
+          {/* Header Space for Mobile Menu - Hidden in print */}
+          <div className="lg:hidden h-16 print:hidden" />
           
           {/* Content */}
-          <div className="p-6">
+          <div className="p-6 print:p-4">
             {children}
           </div>
         </div>

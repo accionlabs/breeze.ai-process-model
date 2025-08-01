@@ -10,3 +10,118 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Print Styles - Hide navigation and adjust layout for printing */
+@media print {
+  
+  /* Hide navigation elements */
+  aside,
+  nav, 
+  .breadcrumbs,
+  button[class*="fixed"],
+  .lg\\:pl-80,
+  [class*="border-r"],
+  [class*="shadow"],
+  .lg\\:hidden.h-16 {
+    display: none !important;
+  }
+
+  
+  /* Reset main content layout for print */
+  main {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+  }
+  
+  /* Adjust content padding for print */
+  .p-6 {
+    padding: 0.5rem !important;
+  }
+  
+  /* Ensure content uses full width */
+  .container,
+  .max-w-6xl {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  /* Hide any floating action buttons or navigation controls */
+  .fixed,
+  button[class*="fixed"],
+  button[class*="absolute"],
+  .print\\:hidden {
+    display: none !important;
+  }
+  
+  /* Adjust background colors for print */
+  .bg-gradient-to-br,
+  .bg-gradient-to-r,
+  .bg-gradient-to-l {
+    background: white !important;
+    color: black !important;
+  }
+  
+  /* Ensure text is readable in print */
+  .text-white {
+    color: black !important;
+  }
+  
+  /* Adjust spacing for better print layout */
+  .mb-12,
+  .mt-12 {
+    margin-bottom: 1.5rem !important;
+    margin-top: 1.5rem !important;
+  }
+  
+  .mb-8,
+  .mt-8 {
+    margin-bottom: 1rem !important;
+    margin-top: 1rem !important;
+  }
+  
+  /* Hide any next/previous buttons in topics */
+  .flex.justify-between.items-center.mt-12,
+  .flex.justify-between.items-center.py-6,
+  button[class*="bg-blue-600"],
+  button[class*="bg-gray-600"],
+  button[class*="bg-purple-600"] {
+    display: none !important;
+  }
+
+  /* Avoid breaking inside important elements */
+  .bg-white,
+  .rounded-xl,
+  .rounded-lg,
+  .space-y-6 > div {
+    break-inside: avoid;
+  }
+
+  .max-w-6xl.mx-auto > div:has(h3) {
+    break-before: page;
+    break-inside: avoid;
+    margin-top: 2rem;
+  }
+
+}
+
+/* Slide Mode Styles */
+/* Simple approach: only hide what's explicitly marked as hidden */
+.slide-container .slide-hidden {
+  display: none !important;
+}
+
+.slide-container .slide-visible {
+  display: block !important;
+}
+
+/* Fixed Navigation Styles */
+.fixed-bottom-nav {
+  backdrop-filter: blur(8px);
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+/* Smooth scrolling for slide content */
+.slide-container {
+  scroll-behavior: smooth;
+}

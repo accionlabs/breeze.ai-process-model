@@ -54,7 +54,8 @@ export const navigateToRoute = (page: 'landing' | 'topic', topic?: string, subTo
 
 // Valid topics and their default subtopics
 const VALID_TOPICS = {
-  'semantic-engineer': 'crisis',
+  'challenge': 'manual-translation-tax',
+  'architecture': 'overview',
   'semantic-model': 'overview', 
   'process-flow': 'overview'
 };
