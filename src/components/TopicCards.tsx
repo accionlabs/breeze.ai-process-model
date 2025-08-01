@@ -394,13 +394,6 @@ const TopicCards: React.FC<TopicCardsProps> = ({
               </span>
             )}
           </div>
-          
-          {/* Keyboard shortcuts hint */}
-          {isSlideMode && (
-            <div className="text-xs text-gray-500 ml-2 hidden md:block">
-              Use ←→ or spacebar to navigate • Esc to exit
-            </div>
-          )}
         </div>
       </div>
 
