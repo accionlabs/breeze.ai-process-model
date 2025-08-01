@@ -42,6 +42,10 @@ const TopicCards: React.FC<TopicCardsProps> = ({
   const [slides, setSlides] = useState<Element[]>([]);
   const [slidesLoading, setSlidesLoading] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
+  
+  // Touch event state for swipe detection
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
   // Sync internal state when initialCard prop changes (from external navigation)
   useEffect(() => {
@@ -290,6 +294,32 @@ const TopicCards: React.FC<TopicCardsProps> = ({
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isSlideMode, currentSlideIndex, slides.length, toggleSlideMode]);
 
+  // Touch event handlers for swipe navigation
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!isSlideMode) return;
+    setTouchEnd(null); // Reset touch end
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isSlideMode) return;
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!isSlideMode || !touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      goToNextSlide();
+    } else if (isRightSwipe) {
+      goToPreviousSlide();
+    }
+  };
+
 
   // Get current topic and subtopic info for breadcrumbs
   const { topic, subTopic } = getTopicByIds(currentTopic, currentSubTopic);
@@ -405,6 +435,9 @@ const TopicCards: React.FC<TopicCardsProps> = ({
               ref={contentRef} 
               className={`${isSlideMode ? 'slide-container' : ''} mobile-scale md:transform-none`}
               style={isSlideMode ? { minHeight: '400px' } : {}}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
             >
               <CurrentComponent 
                 onNavigate={goToCard} 
